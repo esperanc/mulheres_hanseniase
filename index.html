@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mulheres na Hanseníase · SNCT 2026</title>
+  <meta name="description" content="Página interativa de divulgação científica sobre mulheres que transformaram a ciência, o cuidado e os direitos na hanseníase.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Barra de progresso de leitura -->
+<div class="progress" aria-hidden="true"><div class="progress__bar"></div></div>
+
+<!-- Cabeçalho fixo -->
+<header class="topbar">
+  <a class="topbar__brand" href="#abertura">
+    <span class="ribbon" aria-hidden="true"></span>
+    Mulheres na Hanseníase
+  </a>
+  <button class="topbar__menu" aria-expanded="false" aria-controls="menu">
+    <span class="sr-only">Abrir menu de capítulos</span>
+    <span class="burger" aria-hidden="true"></span>
+  </button>
+</header>
+
+<!-- Menu de capítulos (gaveta) -->
+<nav id="menu" class="drawer" aria-label="Capítulos" hidden>
+  <ol class="drawer__list"></ol>
+</nav>
+
+<!-- Navegação por pontos (desktop) -->
+<nav class="dots" aria-label="Navegação rápida"><ol></ol></nav>
+
+<main>
+
+  <!-- 0 · ABERTURA ======================================================= -->
+  <section id="abertura" class="hero" data-chapter="Abertura">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__inner">
+      <p class="hero__badge">Semana Nacional de Ciência e Tecnologia · 2026</p>
+      <h1 class="hero__title">Mulheres<br>na <em>Hanseníase</em></h1>
+      <p class="hero__lede">Ciência, cuidado e direitos: conheça mulheres que ajudaram a entender, tratar e enfrentar o preconceito contra uma das doenças mais antigas da humanidade.</p>
+      <ul class="axes" aria-label="Eixos temáticos"></ul>
+      <div class="hero__portraits" aria-label="Algumas das mulheres apresentadas"></div>
+    </div>
+    <a class="scroll-cue" href="#o-que-e">
+      <span>Role para começar</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </a>
+  </section>
+
+  <!-- 1 · O QUE É HANSENÍASE (scrollytelling) ============================ -->
+  <section id="o-que-e" class="intro" data-chapter="O que é hanseníase?">
+    <header class="section-head">
+      <p class="kicker">Capítulo 1</p>
+      <h2>O que é hanseníase?</h2>
+    </header>
+
+    <div class="scrolly">
+      <figure class="scrolly__graphic" aria-hidden="true">
+        <div class="stage">
+          <!-- cena 1: bacilos -->
+          <svg class="scene" data-scene="1" viewBox="0 0 400 400">
+            <circle cx="200" cy="200" r="170" class="lens"/>
+            <g class="bacilli">
+              <rect x="110" y="140" width="90" height="26" rx="13" transform="rotate(-20 155 153)"/>
+              <rect x="210" y="120" width="80" height="24" rx="12" transform="rotate(25 250 132)"/>
+              <rect x="150" y="210" width="96" height="26" rx="13" transform="rotate(8 198 223)"/>
+              <rect x="240" y="230" width="70" height="22" rx="11" transform="rotate(-35 275 241)"/>
+              <rect x="120" y="270" width="74" height="22" rx="11" transform="rotate(30 157 281)"/>
+              <rect x="215" y="295" width="66" height="20" rx="10" transform="rotate(-8 248 305)"/>
+            </g>
+            <text x="200" y="392" class="scene__caption">Mycobacterium leprae</text>
+          </svg>
+          <!-- cena 2: transmissão -->
+          <svg class="scene" data-scene="2" viewBox="0 0 400 400">
+            <g class="person"><circle cx="110" cy="150" r="38"/><path d="M50 300c0-60 30-100 60-100s60 40 60 100z"/></g>
+            <g class="person person--b"><circle cx="290" cy="150" r="38"/><path d="M230 300c0-60 30-100 60-100s60 40 60 100z"/></g>
+            <g class="droplets">
+              <circle cx="165" cy="160" r="6"/><circle cx="185" cy="148" r="5"/><circle cx="200" cy="168" r="4"/>
+              <circle cx="215" cy="152" r="5"/><circle cx="232" cy="164" r="4"/>
+            </g>
+            <text x="200" y="360" class="scene__caption">contato próximo e prolongado</text>
+          </svg>
+          <!-- cena 3: sinais -->
+          <svg class="scene" data-scene="3" viewBox="0 0 400 400">
+            <path class="skin" d="M120 380V210c0-18 26-18 26 0v-90c0-18 28-18 28 0v-20c0-18 28-18 28 0v20c0-18 28-18 28 0v80c0-18 26-18 26 0v120c0 40-20 60-40 80z"/>
+            <ellipse class="patch" cx="196" cy="290" rx="42" ry="30"/>
+            <path class="nerve" d="M150 380 C170 330 210 320 240 250"/>
+            <text x="200" y="392" class="scene__caption">mancha com menos sensibilidade</text>
+          </svg>
+          <!-- cena 4: tratamento -->
+          <svg class="scene" data-scene="4" viewBox="0 0 400 400">
+            <rect x="80" y="100" width="240" height="190" rx="22" class="blister"/>
+            <g class="pills">
+              <circle cx="135" cy="155" r="20"/><circle cx="200" cy="155" r="20"/><circle cx="265" cy="155" r="20"/>
+              <circle cx="135" cy="230" r="20"/><circle cx="200" cy="230" r="20" class="pill--alt"/><circle cx="265" cy="230" r="20" class="pill--alt"/>
+            </g>
+            <text x="200" y="340" class="scene__big">TEM CURA</text>
+            <text x="200" y="372" class="scene__caption">tratamento gratuito no SUS</text>
+          </svg>
+          <!-- cena 5: preconceito / direitos -->
+          <svg class="scene" data-scene="5" viewBox="0 0 400 400">
+            <path class="ribbon-big" d="M200 70c-40 0-60 40-40 90l-70 170 45 20 65-140 65 140 45-20-70-170c20-50 0-90-40-90zm0 40c18 0 22 22 12 46l-12 26-12-26c-10-24-6-46 12-46z"/>
+            <text x="200" y="392" class="scene__caption">Janeiro Roxo</text>
+          </svg>
+        </div>
+      </figure>
+
+      <div class="scrolly__steps">
+        <article class="step" data-step="1">
+          <h3>Uma doença muito antiga</h3>
+          <p>A hanseníase é causada por uma bactéria, o <i>Mycobacterium leprae</i>. Ela foi identificada em <strong>1873</strong> pelo médico norueguês Gerhard Armauer Hansen — por isso o nome da doença.</p>
+        </article>
+        <article class="step" data-step="2">
+          <h3>Como ela passa de uma pessoa para outra?</h3>
+          <p>Pelas vias respiratórias (gotículas do nariz e da boca), em um <strong>contato próximo e prolongado</strong> com alguém que tem a doença e ainda não está em tratamento. Abraço, aperto de mão ou dividir talheres <strong>não</strong> transmitem. E a maioria das pessoas tem defesa natural contra o bacilo.</p>
+        </article>
+        <article class="step" data-step="3">
+          <h3>Quais são os sinais?</h3>
+          <p>Manchas na pele, mais claras ou avermelhadas, em que a pessoa sente <strong>menos calor, frio, dor ou toque</strong>. O bacilo também atinge os nervos das mãos, pés e olhos. Por isso, diagnosticar cedo evita incapacidades.</p>
+        </article>
+        <article class="step" data-step="4">
+          <h3>Tem cura!</h3>
+          <p>O tratamento é feito com uma combinação de remédios, a <strong>poliquimioterapia (PQT)</strong>, oferecida de graça pelo SUS. Logo que o tratamento começa, a pessoa deixa de transmitir a doença.</p>
+        </article>
+        <article class="step" data-step="5">
+          <h3>O preconceito também adoece</h3>
+          <p>Durante décadas, pessoas com hanseníase foram isoladas à força em colônias, longe de suas famílias. Hoje, falar sobre a doença sem estigma é uma questão de <strong>direitos humanos</strong>. No Brasil, janeiro é o mês da conscientização: o <strong>Janeiro Roxo</strong>.</p>
+          <p class="step__bridge">Muitas mulheres — cientistas, médicas, ativistas e pessoas que viveram a doença — ajudaram a mudar essa história. Vamos conhecê-las?</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAINÉIS INTERATIVOS (placeholders) ================================= -->
+  <!-- Cada painel: cabeçalho + "palco" onde o componente interativo será montado.
+       O conteúdo do palco é gerado em js/main.js a partir de data/*.csv. -->
+
+  <section id="mapa" class="panel" data-chapter="Onde elas estão?" data-icon="map">
+    <header class="panel__head">
+      <p class="kicker">Atividade 1 · Mapa mundial + mapa de impacto</p>
+      <h2>Onde elas nasceram — e onde fizeram a diferença?</h2>
+      <p class="lede">Cada mulher aparece no mapa no lugar onde nasceu. Linhas mostram sua viagem até onde atuou. Camadas extras revelam os países com maior carga histórica de hanseníase e os centros de pesquisa.</p>
+    </header>
+    <div class="stage-frame" data-preview="mapa"></div>
+  </section>
+
+  <section id="linha-do-tempo" class="panel panel--tint" data-chapter="Linha do tempo" data-icon="timeline">
+    <header class="panel__head">
+      <p class="kicker">Atividade 2 · Linha do tempo + gerações</p>
+      <h2>150 anos de história, de 1873 a 2026</h2>
+      <p class="lede">Das primeiras observações do bacilo às estratégias atuais da OMS. Role a linha do tempo e veja como cada geração de mulheres continuou o trabalho da anterior.</p>
+    </header>
+    <div class="stage-frame" data-preview="timeline"></div>
+  </section>
+
+  <section id="quem-sou-eu" class="panel panel--dark" data-chapter="Quem sou eu?" data-icon="mask">
+    <header class="panel__head">
+      <p class="kicker">Atividade 3 · Jogo</p>
+      <h2>Quem sou eu?</h2>
+      <p class="lede">Leia as pistas e tente adivinhar quem é. Vire o cartão para descobrir!</p>
+    </header>
+    <div class="stage-frame" data-preview="quem"></div>
+  </section>
+
+  <section id="voce-sabia" class="panel" data-chapter="Você sabia?" data-icon="phone">
+    <header class="panel__head">
+      <p class="kicker">Atividade 4 · Histórias</p>
+      <h2>Você sabia?</h2>
+      <p class="lede">Curiosidades em cartões verticais, no estilo dos stories. Deslize para o lado.</p>
+    </header>
+    <div class="stage-frame stage-frame--bleed" data-preview="stories"></div>
+  </section>
+
+  <section id="rede" class="panel panel--dark" data-chapter="Rede de colaboração" data-icon="network">
+    <header class="panel__head">
+      <p class="kicker">Atividade 5 · Constelação</p>
+      <h2>Ninguém faz ciência sozinha</h2>
+      <p class="lede">Uma constelação liga pesquisadoras e instituições — Fiocruz, OMS, UFRJ, LSHTM, MORHAN, ALERT e outras. Toque em uma estrela para ver suas conexões.</p>
+    </header>
+    <div class="stage-frame" data-preview="rede"></div>
+  </section>
+
+  <section id="quiz" class="panel panel--tint" data-chapter="Quiz" data-icon="quiz">
+    <header class="panel__head">
+      <p class="kicker">Atividade 6 · Quiz</p>
+      <h2>Teste o que você aprendeu</h2>
+      <p class="lede">Perguntas de múltipla escolha sobre as mulheres e as descobertas que você conheceu nesta página.</p>
+    </header>
+    <div class="stage-frame" data-preview="quiz"></div>
+  </section>
+
+  <section id="palavras" class="panel" data-chapter="Mulheres que mudaram a história" data-icon="cloud">
+    <header class="panel__head">
+      <p class="kicker">Atividade 7 · Nuvem de palavras + contador</p>
+      <h2>Mulheres que mudaram a história</h2>
+      <p class="lede">Quantas são, o que fazem e as palavras que mais aparecem em suas biografias.</p>
+    </header>
+    <div class="stage-frame" data-preview="palavras"></div>
+  </section>
+
+  <!-- ENCERRAMENTO ======================================================== -->
+  <section id="creditos" class="outro" data-chapter="Créditos">
+    <div class="outro__inner">
+      <span class="ribbon ribbon--lg" aria-hidden="true"></span>
+      <h2>Hanseníase tem cura. Preconceito tem solução.</h2>
+      <p>Se você notar uma mancha na pele com alteração de sensibilidade, procure a Unidade Básica de Saúde mais próxima. O diagnóstico e o tratamento são gratuitos no SUS.</p>
+      <div class="outro__grid">
+        <div><h3>Realização</h3><p>[equipe / instituição]</p></div>
+        <div><h3>Fontes</h3><p>[referências bibliográficas e créditos das imagens]</p></div>
+        <div><h3>SNCT 2026</h3><p>Semana Nacional de Ciência e Tecnologia</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/csv.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
