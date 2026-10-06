@@ -377,3 +377,154 @@ img { max-width: 100%; display: block; }
 }
 
 .load-error { background: #fff0eb; color: #8a2c0d; border-radius: 12px; padding: 14px 18px; font-size: 15px; }
+
+/* cenas com fotos (atlas) */
+.scene--photo { margin: 0; display: grid; grid-template-rows: 1fr auto; gap: 12px; }
+.scene--photo img { width: 100%; height: 100%; min-height: 0; object-fit: cover; border-radius: var(--radius); box-shadow: 0 8px 28px rgba(0,0,0,.18); }
+.scene--photo .scene__caption { text-anchor: unset; text-align: center; font-size: 15px; color: var(--roxo-700); }
+
+/* --- Atividade 1 · Mapa -------------------------------------------------- */
+.mapa { gap: 16px; }
+.mapa__bar { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+.seg { display: inline-flex; padding: 4px; gap: 4px; background: var(--roxo-100); border-radius: 99px; flex-wrap: wrap; }
+.seg button {
+  font: 700 14px/1 var(--font-display); color: var(--roxo-800); background: none; border: 0;
+  padding: 10px 16px; border-radius: 99px; cursor: pointer;
+}
+.seg button[aria-checked="true"] { background: var(--roxo-700); color: #fff; }
+.seg button:focus-visible { outline: 3px solid var(--ambar); outline-offset: 2px; }
+.mapa__note { flex: 1 1 320px; margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
+
+.mapa__body { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; align-items: start; }
+.mapa__canvas { position: relative; border-radius: 16px; overflow: hidden; background: #fff; }
+.mapa__svg { display: block; width: 100%; height: auto; touch-action: none; cursor: grab; }
+.mapa__svg:active { cursor: grabbing; }
+.mapa__sphere { fill: var(--roxo-50); }
+.mapa__graticule { fill: none; stroke: var(--roxo-200); stroke-width: .5; opacity: .6; vector-effect: non-scaling-stroke; }
+.mapa__country { stroke: #fff; stroke-width: .6; vector-effect: non-scaling-stroke; cursor: pointer; }
+.mapa__country--dot { stroke-width: 1.2; }
+.mapa__country.is-hot { stroke: var(--ambar); stroke-width: 2.5; }
+
+.mapa__zoom { position: absolute; right: 10px; bottom: 10px; display: grid; gap: 4px; }
+.mapa__zoom button {
+  width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line); background: #fff;
+  font: 700 18px/1 var(--font-display); color: var(--roxo-800); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+.mapa__tip {
+  position: absolute; z-index: 2; pointer-events: none; min-width: 150px; max-width: 240px;
+  background: var(--roxo-950); color: #fff; padding: 10px 12px; border-radius: 12px;
+  font-size: 14px; line-height: 1.35; display: grid; gap: 2px; box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+.mapa__tip[hidden] { display: none; }
+.mapa__tip b { font-family: var(--font-display); font-size: 15px; }
+.mapa__tipval { font: 800 22px/1.1 var(--font-display); color: var(--ambar); }
+.mapa__tip small { color: rgba(255,255,255,.7); font-size: 12px; }
+
+.mapa__side { font-size: 15px; }
+.mapa__headline { margin: 0 0 18px; line-height: 1.4; }
+.mapa__big { display: block; font: 800 44px/1 var(--font-display); color: var(--roxo-700); }
+.mapa__rank { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: r; }
+.mapa__rank li {
+  counter-increment: r; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center;
+  padding: 4px 6px; border-radius: 8px; cursor: default;
+}
+.mapa__rank li.is-hot { background: var(--roxo-100); }
+.mapa__rank li.is-br .mapa__rname { font-weight: 800; color: var(--roxo-800); }
+.mapa__rname { font-size: 14px; line-height: 1.2; }
+.mapa__rname::before { content: counter(r) ". "; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.mapa__rval { font: 700 13px/1 var(--font-display); font-variant-numeric: tabular-nums; color: var(--ink); }
+.mapa__rbar { grid-column: 1 / -1; height: 6px; background: var(--roxo-50); border-radius: 3px; overflow: hidden; }
+.mapa__rbar i { display: block; height: 100%; border-radius: 3px; }
+
+.mapa__legend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 13px; color: var(--ink-soft); }
+.mapa__lunit { font-family: var(--font-display); font-weight: 700; color: var(--ink); margin-right: 4px; }
+.mapa__lkey { display: inline-flex; align-items: center; gap: 6px; }
+.mapa__lkey i { width: 18px; height: 12px; border-radius: 3px; }
+.mapa__lkey i.is-nodata { background: repeating-linear-gradient(45deg, #e4e2e8 0 3px, #b9b4c2 3px 5px); }
+.mapa__source { margin: 0; font-size: 12px; color: var(--ink-soft); }
+
+/* camadas e filtros */
+.stage-frame.mapa { border-style: solid; }
+.stage-frame.mapa::before { display: none; }
+.mapa__layers { display: inline-flex; gap: 6px; }
+.layer, .chip-toggle {
+  font: 700 14px/1 var(--font-display); cursor: pointer; border-radius: 99px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.layer { padding: 10px 16px; border: 2px solid var(--roxo-700); background: #fff; color: var(--roxo-700); }
+.layer::before { content: ""; width: 14px; height: 14px; border-radius: 4px; border: 2px solid currentColor; }
+.layer[aria-pressed="true"] { background: var(--roxo-700); color: #fff; }
+.layer[aria-pressed="true"]::before { background: currentColor; box-shadow: inset 0 0 0 2px var(--roxo-700); }
+.seg button:disabled { opacity: .4; cursor: not-allowed; }
+.mapa__axes { display: flex; flex-wrap: wrap; gap: 8px; }
+.mapa__axes[hidden], .mapa__people[hidden], .mapa__legend[hidden], .mapa__card[hidden], .mapa__stats[hidden] { display: none; }
+.chip-toggle { padding: 7px 12px; font-size: 13px; border: 2px solid var(--c); background: #fff; color: var(--ink); }
+.chip-toggle::before { content: ""; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--c); }
+.chip-toggle[aria-pressed="true"]::before { background: var(--c); }
+.chip-toggle[aria-pressed="false"] { opacity: .55; border-style: dashed; }
+.layer:focus-visible, .chip-toggle:focus-visible, .mapa__person:focus-visible { outline: 3px solid var(--ambar); outline-offset: 2px; }
+
+/* mulheres no mapa */
+.mapa__arc { fill: none; stroke: var(--c); stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: 1; animation: mapa-draw 1.4s .3s ease-out forwards; }
+@keyframes mapa-draw { to { stroke-dashoffset: 0; } }
+.mapa__workpt { fill: #fff; stroke: var(--c); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.mapa__leader { stroke: var(--roxo-900); stroke-width: 1; opacity: .5; vector-effect: non-scaling-stroke; }
+.mapa__face { cursor: pointer; outline: none; }
+.mapa__ring { fill: var(--c); stroke: #fff; stroke-width: 2; }
+.mapa__bg { fill: var(--roxo-700); }
+.mapa__face text { fill: #fff; font: 700 11px var(--font-display); text-anchor: middle; pointer-events: none; }
+.mapa__face image { filter: grayscale(1) contrast(1.05); }
+.mapa__tint { fill: var(--roxo-600); mix-blend-mode: color; pointer-events: none; }
+.mapa__face:hover .mapa__ring, .mapa__face:focus-visible .mapa__ring { stroke: var(--ambar); stroke-width: 4; }
+.mapa__face, .mapa__trip, .mapa__leader { transition: opacity .3s; }
+.is-hidden.mapa__face, .is-hidden.mapa__trip, .is-hidden.mapa__leader { opacity: 0; pointer-events: none; }
+.has-selection .mapa__face:not(.is-selected), .has-selection .mapa__leader { opacity: .3; }
+.has-selection .mapa__trip:not(.is-selected) { opacity: .12; }
+.mapa__face.is-selected .mapa__ring { stroke: var(--ambar); stroke-width: 4; }
+.mapa__trip.is-selected .mapa__arc { stroke-width: 3.5; }
+@media (prefers-reduced-motion: reduce) { .mapa__arc { animation: none; stroke-dashoffset: 0; } }
+
+/* painel lateral: sem a camada Impacto */
+.mapa__stats.is-off > * { display: none; }
+.mapa__stats.is-off::before { content: "Clique num retrato para conhecer a história de cada mulher."; color: var(--ink-soft); }
+
+/* cartão da mulher */
+.mapa__card { position: relative; display: grid; gap: 12px; font-size: 15px; line-height: 1.5; }
+.mapa__close {
+  position: absolute; top: -6px; right: -6px; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--line); background: #fff; font-size: 22px; line-height: 1; color: var(--roxo-800); cursor: pointer;
+}
+.mapa__cardhead { display: flex; gap: 14px; align-items: center; padding-right: 30px; }
+.mapa__cardhead .portrait { margin: 0; flex: none; border-width: 3px; }
+.mapa__cardhead h3 { font-size: 19px; margin: 0 0 2px; color: var(--roxo-900); }
+.mapa__cardhead small { color: var(--ink-soft); font-size: 13px; line-height: 1.3; display: block; }
+.mapa__card .tag-eixo { justify-self: start; }
+.mapa__trajectory { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; margin: 0; }
+.mapa__trajectory dt { font-weight: 700; color: var(--roxo-700); font-size: 13px; padding-top: 1px; }
+.mapa__trajectory dd { margin: 0; }
+.mapa__contrib { margin: 0; max-height: 9.5em; overflow: auto; }
+.mapa__impact { margin: -6px 0 0; padding: 0; list-style: none; }
+.mapa__cardval { font: 800 18px var(--font-display); color: var(--roxo-700); }
+.mapa__card details summary { cursor: pointer; font-weight: 700; color: var(--roxo-700); }
+.mapa__card details p { margin: 6px 0 0; max-height: 14em; overflow: auto; }
+.mapa__approx { margin: 0; font-size: 12px; color: var(--ink-soft); font-style: italic; }
+
+/* faixa de retratos */
+.mapa__people { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px 8px; scrollbar-width: thin; }
+.mapa__person {
+  flex: none; display: grid; justify-items: center; gap: 4px; width: 76px; padding: 6px 2px;
+  border: 0; border-radius: 12px; background: none; cursor: pointer;
+  font: 600 12px/1.15 var(--font-body); color: var(--ink); text-align: center;
+}
+.mapa__person .portrait { margin: 0; border-color: var(--c); border-width: 3px; }
+.mapa__person:hover, .mapa__person[aria-pressed="true"] { background: var(--roxo-100); }
+.mapa__person.is-hidden { display: none; }
+
+@media (max-width: 860px) {
+  .mapa__body { grid-template-columns: 1fr; }
+  .mapa__rank { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .mapa__zoom { right: 6px; bottom: 6px; }
+  .mapa__stats.is-off { display: none; }
+  .mapa__zoom button { width: 28px; height: 28px; font-size: 15px; }
+}

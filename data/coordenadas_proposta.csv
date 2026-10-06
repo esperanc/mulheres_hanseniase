@@ -1,0 +1,14 @@
+nome;cidade_nascimento;pais_nascimento_iso3;lat_nascimento;lon_nascimento;locais_atuacao;confianca;observacao
+Wanda Maria Błeńska;Poznań;POL;52.41;16.93;Buluba|UGA|0.40|33.37;alta;"Planilha traz 0,33° S 33,04° E; Buluba fica às margens do Lago Vitória, ao norte do Equador. Validar."
+Ruth Bowden;;IND;20.59;78.96;Cartum|SDN|15.50|32.56;baixa;"Minibio diz que nasceu na Índia, mas sem cidade: ponto no centro do país. ""Sudam"" corrigido para Sudão (SDN)."
+Indira Nath;Hyderabad;IND;17.39;78.49;Nova Déli|IND|28.61|77.21;média;Cidade de nascimento a confirmar.
+Agnes Grace Warren;;AUS;-33.87;151.21;Hong Kong|HKG|22.32|114.17;baixa;"Nascimento: só o país (Austrália); ponto em Sydney provisório. Planilha diz ""China; Thailand"" em país de atuação mas cidade Hong Kong. Hong Kong não está na planilha da OMS."
+Li Huanying;Pequim;CHN;39.90;116.40;"Pequim|CHN|39.90|116.40; Kunming (Yunnan)|CHN|25.04|102.71";média;"Atuou também em Guizhou e Sichuan; ""Estados Unidos"" em país de atuação provavelmente se refere à formação. Validar."
+Rachna Kumari;Munger;IND;25.37;86.47;Munger|IND|25.37|86.47;baixa;Nascimento em Munger presumido. Validar.
+Agnes Gonxha Bojaxiu (Madre Teresa de Calcutá);Skopje (Üsküb);MKD;42.00;21.43;Calcutá|IND|22.57|88.36;alta;
+Jean Margaret Watson;Nottingham;GBR;52.95;-1.15;"Adis Abeba|ETH|9.03|38.74; Kunming (Yunnan)|CHN|25.04|102.71";alta;"Planilha diz ""Yunan""; ponto em Kunming, capital da província."
+Jeannine Ebenso;Preston (Lancashire);GBR;53.76;-2.70;Nigéria|NGA|9.08|8.68;baixa;"Planilha diz só ""Lancashire"" e ""Nigéria""; pontos provisórios (capital do condado e centro do país)."
+Maria Leide Wand-Del-Rey de Oliveira;;BRA;-14.24;-51.93;Rio de Janeiro (UFRJ)|BRA|-22.842|-43.236;baixa;Falta a cidade de nascimento (ponto no centro do Brasil). Coordenada de atuação convertida de -22.841.982.
+Euzenir Nunes Sarno;;BRA;-14.24;-51.93;Rio de Janeiro (Fiocruz)|BRA|-22.875|-43.245;baixa;Falta a cidade de nascimento (ponto no centro do Brasil). Coordenada de atuação convertida de -22.874.887.
+Alice Augusta Ball;Seattle;USA;47.61;-122.33;Honolulu|USA|21.31|-157.86;alta;
+Olivia Robello Breitha;Honolulu;USA;21.31;-157.86;Kalaupapa (Molokai)|USA|21.19|-156.98;média;"Planilha diz ""Hawaii""; Honolulu presumido. Kalaupapa convertida de 21° 11′ 22″ N 156° 58′ 54″ O."

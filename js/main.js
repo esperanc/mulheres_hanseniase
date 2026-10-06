@@ -93,21 +93,6 @@
 
   /* ---------- Prévias de cada painel (dados reais, interação mínima) ------ */
   const PREVIEWS = {
-    mapa(D) {
-      return plan("map", "Como vai funcionar", [
-        "Mapa-múndi com retratos no local de nascimento; clique abre biografia, descobertas e impacto.",
-        "Arcos ligam nascimento → país de atuação.",
-        "Camadas liga/desliga: carga histórica da doença · pesquisadoras · centros de pesquisa.",
-      ]) + `<div><p class="preview-label">Prévia dos dados · ${D.women.length} trajetórias</p>
-        <div class="routes">${D.women.map(w => `
-          <div class="route">${portrait(w)}<div>
-            <b>${esc(w.name)}</b>
-            <small>${esc(w.origin)} → ${esc(w.countryWork)}${w.cityWork ? " (" + esc(w.cityWork) + ")" : ""}</small><br>
-            <span class="tag-eixo" style="--c:${axisColor(w.axis)}">${esc(w.axis?.label || w.axisRaw)}</span>
-          </div></div>`).join("")}
-        </div></div>`;
-    },
-
     timeline(D) {
       const start = 1873, end = 2026, pct = y => ((y - start) / (end - start)) * 100;
       const eras = [
@@ -270,11 +255,15 @@
     renderHero(D);
     $$("[data-preview]").forEach(el => { el.innerHTML = PREVIEWS[el.dataset.preview](D); });
     wirePreviews();
+    const COMPONENTS = { mapa: MAPA.mount };
+    $$("[data-component]").forEach(el => COMPONENTS[el.dataset.component](el, D).catch(err => {
+      console.error(err); el.innerHTML = `<p class="load-error">Não foi possível montar o painel: ${esc(err.message)}</p>`;
+    }));
   }).catch(err => {
     console.error(err);
     const msg = location.protocol === "file:"
       ? "Abra a página por um servidor local (ex.: <code>python3 -m http.server</code>) — navegadores bloqueiam a leitura dos CSV via file://."
       : "Não foi possível carregar os dados: " + esc(err.message);
-    $$("[data-preview]").forEach(el => { el.innerHTML = `<p class="load-error">${msg}</p>`; });
+    $$("[data-preview], [data-component]").forEach(el => { el.innerHTML = `<p class="load-error">${msg}</p>`; });
   });
 })();
