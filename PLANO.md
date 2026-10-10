@@ -50,10 +50,14 @@ A ordem segue o percurso **conhecer → localizar → contextualizar → brincar
 
 ## Identidade visual
 
-- **Roxo** como cor principal (Janeiro Roxo), numa escala de `--roxo-950` a `--roxo-50`. Os painéis alternam fundo claro, lilás e roxo‑escuro para marcar o ritmo da rolagem.
-- **Âmbar** como cor de destaque (chamadas, estado ativo, "em construção"). É o complemento quente do roxo.
-- **Seis cores de eixo** (`--eixo-*`), usadas em etiquetas, mapa, linha do tempo e stories.
-- Tipografia: **Sora** (títulos, geométrica e jovem) e **Nunito Sans** (texto, arredondada e muito legível). Corpo de texto com 17–20 px.
+Segue o manual da marca da **23ª SNCT "Ciência Delas"** (`design_requirements/`: `Marca_23SNCT.pdf`, logotipos em PNG/vetor e réguas).
+
+- **Paleta oficial** em `--marca-*`: Violeta Profundo `#43318C`, Magenta Framboesa `#C5127C`, Verde Lima `#B6C939`, Amarelo Dourado `#F1CB25`, Laranja Vibrante `#FA8607` e Azul Ciano `#009EE0`.
+- **Violeta** como cor principal (também remete ao Janeiro Roxo), numa escala de `--roxo-950` a `--roxo-50` em que `--roxo-700` é o Violeta Profundo. Abertura e painéis escuros usam o violeta da marca.
+- **Amarelo Dourado** (`--ambar`) como cor de destaque (estado ativo, "em construção").
+- **Seis cores de eixo** (`--eixo-*`) tiradas da paleta, cada uma com a cor de texto legível sobre ela (`--eixo-*-on`).
+- **Tipografia**: o manual pede Redonda (Adobe Fonts) nos títulos e **Outfit** nos textos. Como Redonda exige assinatura Adobe, a página usa só a Outfit (Google Fonts), com pesos 800–900 nos títulos.
+- **Elementos da marca**: logotipo horizontal da SNCT no cabeçalho (branco sobre a abertura, violeta quando o cabeçalho fica sólido); "HANSENÍASE" em blocos coloridos, como o "DELAS" do logotipo; faixa de quadrados coloridos (padrões geométricos); régua oficial SNCT + MCTI no rodapé. Versões web dos arquivos ficam em `assets/marca/`.
 - Fotos em **duotom roxo**, para dar unidade a imagens de origens e qualidades diferentes.
 - Ilustrações em SVG simples, sem imagens de lesões. É uma escolha deliberada, pensando no público infantil e no combate ao estigma.
 - Acessibilidade: `prefers-reduced-motion`, foco visível, navegação por teclado (Esc fecha o menu), HTML semântico.

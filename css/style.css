@@ -1,41 +1,54 @@
 /* ==========================================================================
    Mulheres na Hanseníase — SNCT 2026
-   Identidade: roxo (Janeiro Roxo) + âmbar como cor de destaque.
+   Identidade: marca da 23ª SNCT "Ciência Delas" (design_requirements/).
+   Violeta Profundo como base + as cinco cores vivas da paleta oficial.
    ========================================================================== */
 
 :root {
-  /* Roxos */
-  --roxo-950: #1a0629;
-  --roxo-900: #2a0a3d;
-  --roxo-800: #3d1159;
-  --roxo-700: #5b1a85;
-  --roxo-600: #7b2cbf;
-  --roxo-500: #9445d6;
-  --roxo-400: #b07ce6;
-  --roxo-200: #e0cdf7;
-  --roxo-100: #efe5fb;
-  --roxo-50:  #f8f3fd;
+  /* Paleta oficial da 23ª SNCT */
+  --marca-violeta: #43318C;  /* Violeta Profundo  · Pantone 7672 C */
+  --marca-magenta: #C5127C;  /* Magenta Framboesa · Pantone 226 C  */
+  --marca-lima:    #B6C939;  /* Verde Lima        · Pantone 382 C  */
+  --marca-amarelo: #F1CB25;  /* Amarelo Dourado   · Pantone 116 C  */
+  --marca-laranja: #FA8607;  /* Laranja Vibrante  · Pantone 151 C  */
+  --marca-ciano:   #009EE0;  /* Azul Ciano        · Pantone 299 C  */
+
+  /* Escala de violeta derivada da cor da marca (700 = Violeta Profundo) */
+  --roxo-950: #1b1240;
+  --roxo-900: #2b1f63;
+  --roxo-800: #382878;
+  --roxo-700: var(--marca-violeta);
+  --roxo-600: #5640a8;
+  --roxo-500: #6f5bc4;
+  --roxo-400: #9a8adb;
+  --roxo-200: #d5cef0;
+  --roxo-100: #ebe7f8;
+  --roxo-50:  #f6f4fc;
 
   /* Destaques */
-  --ambar: #f5b83d;
-  --coral: #ff7a59;
+  --ambar: var(--marca-amarelo);
+  --coral: var(--marca-laranja);
 
-  /* Cores dos 6 eixos temáticos */
-  --eixo-descobertas: #9445d6;
-  --eixo-tratamento:  #13a38f;
-  --eixo-saude:       #3478e0;
-  --eixo-direitos:    #ea6a2a;
-  --eixo-clinica:     #d4336f;
-  --eixo-vivencia:    #e0a100;
+  /* Cores dos 6 eixos temáticos (paleta da marca) + cor do texto sobre elas */
+  --eixo-descobertas: var(--marca-ciano);   --eixo-descobertas-on: #fff;
+  --eixo-tratamento:  var(--marca-lima);    --eixo-tratamento-on:  var(--roxo-950);
+  --eixo-saude:       var(--roxo-500);      --eixo-saude-on:       #fff;
+  --eixo-direitos:    var(--marca-magenta); --eixo-direitos-on:    #fff;
+  --eixo-clinica:     var(--marca-laranja); --eixo-clinica-on:     var(--roxo-950);
+  --eixo-vivencia:    var(--marca-amarelo); --eixo-vivencia-on:    var(--roxo-950);
 
   /* Texto e superfícies */
-  --ink: #1f1430;
-  --ink-soft: #5a4a6e;
+  --ink: #1d1638;
+  --ink-soft: #564d72;
   --paper: #ffffff;
-  --line: #e6dcf1;
+  --line: #e3def3;
 
-  --font-display: "Sora", system-ui, sans-serif;
-  --font-body: "Nunito Sans", system-ui, sans-serif;
+  /* Fontes: o manual pede Redonda (Adobe Fonts) nos títulos e Outfit nos
+     textos. Como substituta da Redonda nos títulos grandes, usamos a
+     Unbounded (Google Fonts); o resto da interface fica em Outfit. */
+  --font-title: "Unbounded", "Outfit", system-ui, sans-serif;
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "Outfit", system-ui, sans-serif;
 
   --radius: 18px;
   --gutter: clamp(16px, 4vw, 48px);
@@ -56,7 +69,8 @@ body {
   overflow-x: hidden;
 }
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; margin: 0 0 .5em; letter-spacing: -.02em; }
-h2 { font-size: clamp(30px, 4.2vw, 54px); font-weight: 800; }
+h1, h2 { font-family: var(--font-title); }
+h2 { font-size: clamp(26px, 3.6vw, 46px); font-weight: 800; letter-spacing: -.01em; line-height: 1.15; }
 h3 { font-size: clamp(20px, 1.8vw, 26px); font-weight: 700; }
 p { margin: 0 0 1em; }
 a { color: inherit; }
@@ -86,7 +100,7 @@ img { max-width: 100%; display: block; }
 
 /* --- Progresso + topo ----------------------------------------------------- */
 .progress { position: fixed; inset: 0 0 auto; height: 4px; z-index: 60; background: transparent; }
-.progress__bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--roxo-500), var(--ambar)); }
+.progress__bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--marca-ciano), var(--marca-lima), var(--marca-amarelo), var(--marca-laranja), var(--marca-magenta)); }
 
 .topbar {
   position: fixed; inset: 0 0 auto; height: var(--topbar-h); z-index: 50;
@@ -96,7 +110,13 @@ img { max-width: 100%; display: block; }
   transition: background .3s, color .3s, box-shadow .3s;
 }
 .topbar.is-solid { background: rgba(255,255,255,.92); backdrop-filter: blur(10px); color: var(--roxo-900); box-shadow: 0 1px 0 var(--line); }
-.topbar__brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; text-decoration: none; font-size: 16px; }
+.topbar__brand { display: flex; align-items: center; gap: 14px; font-family: var(--font-display); font-weight: 700; text-decoration: none; font-size: 16px; }
+.topbar__logo { display: block; height: 38px; }
+.topbar__logo img { height: 100%; width: auto; }
+.topbar__logo .logo--dark, .topbar.is-solid .topbar__logo .logo--light { display: none; }
+.topbar.is-solid .topbar__logo .logo--dark { display: block; }
+.topbar__title { padding-left: 14px; border-left: 1px solid currentColor; line-height: 1.15; }
+@media (max-width: 480px) { .topbar__logo { height: 30px; } .topbar__title { font-size: 14px; } }
 .topbar__menu { width: 44px; height: 44px; border: 0; background: transparent; color: inherit; cursor: pointer; display: grid; place-items: center; border-radius: 12px; }
 .topbar__menu:hover { background: rgba(148, 69, 214, .15); }
 .burger, .burger::before, .burger::after { display: block; width: 22px; height: 2px; background: currentColor; border-radius: 2px; position: relative; transition: transform .25s, background .25s; }
@@ -141,18 +161,17 @@ img { max-width: 100%; display: block; }
 
 /* --- Hero ----------------------------------------------------------------- */
 .hero {
-  position: relative; min-height: 100svh; display: grid; align-items: center;
+  position: relative; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center;
   padding: calc(var(--topbar-h) + 40px) var(--gutter) 120px;
   color: #fff; overflow: hidden;
-  background: var(--roxo-950);
+  background: var(--roxo-700);
 }
 .hero__bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(60% 50% at 80% 20%, rgba(148, 69, 214, .55), transparent 70%),
-    radial-gradient(50% 60% at 10% 90%, rgba(212, 51, 111, .35), transparent 70%),
-    radial-gradient(40% 40% at 60% 80%, rgba(245, 184, 61, .18), transparent 70%),
-    linear-gradient(160deg, var(--roxo-900), var(--roxo-950));
+    radial-gradient(60% 50% at 85% 15%, rgba(111, 91, 196, .55), transparent 70%),
+    radial-gradient(50% 60% at 5% 95%, rgba(27, 18, 64, .5), transparent 70%),
+    var(--roxo-700);
 }
 .hero__bg::after { /* textura de "bacilos" sutil */
   content: ""; position: absolute; inset: 0; opacity: .08;
@@ -163,8 +182,24 @@ img { max-width: 100%; display: block; }
   display: inline-block; font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: .06em;
   padding: 6px 14px; border: 1px solid rgba(255,255,255,.3); border-radius: 99px; margin-bottom: 28px;
 }
-.hero__title { font-size: clamp(48px, 10vw, 136px); font-weight: 800; letter-spacing: -.04em; line-height: .95; margin-bottom: 28px; }
-.hero__title em { font-style: normal; background: linear-gradient(90deg, var(--roxo-400), var(--ambar)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero__title { font-size: clamp(40px, 8.4vw, 116px); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-bottom: 28px; }
+/* "HANSENÍASE" em blocos coloridos, como o "DELAS" da marca */
+.blocks { display: inline-flex; flex-wrap: nowrap; gap: .04em; margin-top: .1em; font-size: min(1em, 8.2vw); font-weight: 900; text-transform: uppercase; letter-spacing: 0; }
+.blocks span { display: block; padding: .06em .07em 0; line-height: .9; color: var(--roxo-950); }
+.blocks span:nth-child(5n+1) { background: var(--marca-ciano); color: #fff; }
+.blocks span:nth-child(5n+2) { background: var(--marca-lima); }
+.blocks span:nth-child(5n+3) { background: var(--marca-magenta); color: #fff; }
+.blocks span:nth-child(5n+4) { background: var(--marca-amarelo); }
+.blocks span:nth-child(5n+5) { background: var(--marca-laranja); }
+
+/* faixa de quadrados coloridos (padrão geométrico da marca) */
+.brand-strip {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 14px;
+  background: linear-gradient(90deg,
+    var(--marca-ciano) 0 16.66%, var(--marca-lima) 0 33.33%, var(--marca-magenta) 0 50%,
+    var(--marca-amarelo) 0 66.66%, var(--marca-laranja) 0 83.33%, var(--roxo-950) 0);
+  background-size: 360px 100%;
+}
 .hero__lede { font-size: clamp(18px, 1.6vw, 23px); max-width: 46ch; color: rgba(255,255,255,.85); }
 
 .axes { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 32px 0 0; }
@@ -174,10 +209,10 @@ img { max-width: 100%; display: block; }
 }
 .axes li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
 
-.hero__portraits { display: flex; margin-top: 40px; }
+.hero__portraits { display: flex; margin-top: 40px; overflow: hidden; }
 .portrait {
   --size: 64px; width: var(--size); height: var(--size); border-radius: 50%; overflow: hidden; flex: none;
-  border: 3px solid var(--roxo-950); margin-left: -12px; position: relative; background: var(--roxo-700);
+  border: 3px solid var(--roxo-700); margin-left: -12px; position: relative; background: var(--roxo-700);
   display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; color: #fff;
 }
 .portrait:first-child { margin-left: 0; }
@@ -247,7 +282,7 @@ img { max-width: 100%; display: block; }
 .panel { padding: 120px var(--gutter); min-height: 100svh; display: grid; align-content: center; }
 .panel > * { max-width: var(--maxw); width: 100%; margin-inline: auto; }
 .panel--tint { background: var(--roxo-50); }
-.panel--dark { background: var(--roxo-900); color: #fff; }
+.panel--dark { background: var(--roxo-700); color: #fff; }
 .panel--dark .kicker { color: var(--ambar); }
 .panel--dark .lede { color: rgba(255,255,255,.75); }
 .panel__head { margin-bottom: 40px; }
@@ -282,7 +317,7 @@ img { max-width: 100%; display: block; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
 .chip { font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 99px; background: var(--roxo-100); color: var(--roxo-800); }
 .panel--dark .chip { background: rgba(255,255,255,.1); color: #fff; }
-.tag-eixo { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; color: #fff; background: var(--c, var(--roxo-600)); display: inline-block; }
+.tag-eixo { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; color: var(--on, #fff); background: var(--c, var(--roxo-600)); display: inline-block; }
 
 /* Prévia: mapa (rotas origem → atuação) */
 .routes { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
@@ -318,7 +353,7 @@ img { max-width: 100%; display: block; }
 .story {
   flex: none; width: 240px; aspect-ratio: 9 / 16; border-radius: 22px; scroll-snap-align: start;
   position: relative; overflow: hidden; color: #fff; padding: 22px 20px; display: flex; flex-direction: column; justify-content: space-between;
-  background: linear-gradient(170deg, var(--c, var(--roxo-600)), var(--roxo-950));
+  background: linear-gradient(170deg, var(--c, var(--roxo-600)), var(--roxo-950) 75%);
 }
 .story__bars { display: flex; gap: 4px; }
 .story__bars i { flex: 1; height: 3px; border-radius: 3px; background: rgba(255,255,255,.35); }
@@ -359,7 +394,16 @@ img { max-width: 100%; display: block; }
 .cloud span { font-family: var(--font-display); font-weight: 700; line-height: 1.1; }
 
 /* --- Encerramento --------------------------------------------------------- */
-.outro { background: var(--roxo-950); color: #fff; padding: 140px var(--gutter) 80px; text-align: center; }
+.outro { position: relative; background: var(--roxo-950); color: #fff; padding: 140px var(--gutter) 80px; text-align: center; }
+.outro::before { content: ""; position: absolute; inset: 0 0 auto; height: 14px;
+  background: linear-gradient(90deg,
+    var(--marca-ciano) 0 16.66%, var(--marca-lima) 0 33.33%, var(--marca-magenta) 0 50%,
+    var(--marca-amarelo) 0 66.66%, var(--marca-laranja) 0 83.33%, var(--roxo-700) 0);
+  background-size: 360px 100%; }
+
+/* --- Régua oficial (SNCT + MCTI) ------------------------------------------ */
+.regua { background: #fff; padding: 24px var(--gutter); display: flex; justify-content: center; }
+.regua img { width: min(100%, 760px); height: auto; }
 .outro__inner { max-width: 820px; margin: 0 auto; }
 .outro p { color: rgba(255,255,255,.8); }
 .outro__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 80px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.15); text-align: left; }
@@ -381,6 +425,9 @@ img { max-width: 100%; display: block; }
 /* cenas com fotos (atlas) */
 .scene--photo { margin: 0; display: grid; grid-template-rows: 1fr auto; gap: 12px; }
 .scene--photo img { width: 100%; height: 100%; min-height: 0; object-fit: cover; border-radius: var(--radius); box-shadow: 0 8px 28px rgba(0,0,0,.18); }
+/* foto inteira, sem corte (ex.: garra ulnar, cujo detalhe está na borda) */
+.scene--whole { grid-template-rows: auto auto; align-content: center; }
+.scene--whole img { height: auto; }
 .scene--photo .scene__caption { text-anchor: unset; text-align: center; font-size: 15px; color: var(--roxo-700); }
 
 /* --- Atividade 1 · Mapa -------------------------------------------------- */

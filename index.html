@@ -7,7 +7,7 @@
   <meta name="description" content="Página interativa de divulgação científica sobre mulheres que transformaram a ciência, o cuidado e os direitos na hanseníase.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&family=Unbounded:wght@600..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,8 +18,11 @@
 <!-- Cabeçalho fixo -->
 <header class="topbar">
   <a class="topbar__brand" href="#abertura">
-    <span class="ribbon" aria-hidden="true"></span>
-    Mulheres na Hanseníase
+    <span class="topbar__logo" aria-hidden="true">
+      <img class="logo--light" src="assets/marca/snct-horizontal-branco.png" alt="">
+      <img class="logo--dark" src="assets/marca/snct-horizontal-violeta.png" alt="">
+    </span>
+    <span class="topbar__title">Mulheres na Hanseníase</span>
   </a>
   <button class="topbar__menu" aria-expanded="false" aria-controls="menu">
     <span class="sr-only">Abrir menu de capítulos</span>
@@ -41,12 +44,13 @@
   <section id="abertura" class="hero" data-chapter="Abertura">
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="hero__inner">
-      <p class="hero__badge">Semana Nacional de Ciência e Tecnologia · 2026</p>
-      <h1 class="hero__title">Mulheres<br>na <em>Hanseníase</em></h1>
+      <p class="hero__badge">23ª Semana Nacional de Ciência e Tecnologia · Ciência Delas</p>
+      <h1 class="hero__title">Mulheres na<br><span class="sr-only">Hanseníase</span><span class="blocks" aria-hidden="true"><span>H</span><span>A</span><span>N</span><span>S</span><span>E</span><span>N</span><span>Í</span><span>A</span><span>S</span><span>E</span></span></h1>
       <p class="hero__lede">Ciência, cuidado e direitos: conheça mulheres que ajudaram a entender, tratar e enfrentar o preconceito contra uma das doenças mais antigas da humanidade.</p>
       <ul class="axes" aria-label="Eixos temáticos"></ul>
       <div class="hero__portraits" aria-label="Algumas das mulheres apresentadas"></div>
     </div>
+    <div class="brand-strip" aria-hidden="true"></div>
     <a class="scroll-cue" href="#o-que-e">
       <span>Role para começar</span>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
@@ -78,7 +82,7 @@
           <!-- cena 3: sinais -->
           <figure class="scene scene--photo" data-scene="3"><img src="data/photo/atlas/atlas_sinais_pele_1.jpg" alt="Mancha clara no antebraço" loading="lazy"><figcaption class="scene__caption">mancha clara com menos sensibilidade</figcaption></figure>
           <!-- cena 4: sinais nos nervos -->
-          <figure class="scene scene--photo" data-scene="4"><img src="data/photo/atlas/atlas_sinais_nervos_1.jpg" alt="Mãos com dedos afetados por lesão de nervos" loading="lazy"><figcaption class="scene__caption">nervos de mãos e pés podem ser atingidos</figcaption></figure>
+          <figure class="scene scene--photo scene--whole" data-scene="4"><img src="data/photo/atlas/atlas_sinais_nervos_1.jpg" alt="Duas mãos espalmadas; na mão esquerda, o dedo mínimo fica dobrado em garra" loading="lazy"><figcaption class="scene__caption">garra ulnar, grau 2 de incapacidade física</figcaption></figure>
           <!-- cena 5: tratamento -->
           <figure class="scene scene--photo" data-scene="5"><img src="data/photo/atlas/atlas_cura.jpg" alt="Cartela de poliquimioterapia (PQT) para tratar hanseníase" loading="lazy"><figcaption class="scene__caption">cartela de PQT: tratamento gratuito no SUS</figcaption></figure>
           <!-- cena 6: preconceito / direitos -->
@@ -127,7 +131,7 @@
     <header class="panel__head">
       <p class="kicker">Atividade 1 · Mapa mundial + mapa de impacto</p>
       <h2>Onde elas nasceram — e onde fizeram a diferença?</h2>
-      <p class="lede">Cada mulher aparece no mapa no lugar onde nasceu. Linhas mostram sua viagem até onde atuou. As cores dos países mostram onde a hanseníase ainda é mais frequente hoje.</p>
+      <p class="lede">Cada mulher aparece no mapa no lugar onde nasceu. Linhas mostram sua viagem até onde atuou. As cores dos países mostram onde a hanseníase ainda é descoberta tarde demais, quando já deixou marcas no corpo.</p>
     </header>
     <div class="stage-frame" data-component="mapa"></div>
   </section>
@@ -195,12 +199,17 @@
       <div class="outro__grid">
         <div><h3>Realização</h3><p>[equipe / instituição]</p></div>
         <div><h3>Fontes</h3><p>[referências bibliográficas e créditos das imagens]</p></div>
-        <div><h3>SNCT 2026</h3><p>Semana Nacional de Ciência e Tecnologia</p></div>
+        <div><h3>SNCT 2026</h3><p>23ª Semana Nacional de Ciência e Tecnologia · Ciência Delas</p></div>
       </div>
     </div>
   </section>
 
 </main>
+
+<!-- Régua oficial: SNCT + Ministério da Ciência, Tecnologia e Inovação -->
+<footer class="regua">
+  <img src="assets/marca/regua.png" alt="23ª Semana Nacional de Ciência e Tecnologia · Ministério da Ciência, Tecnologia e Inovação · Governo do Brasil">
+</footer>
 
 <script src="js/vendor/d3.min.js"></script>
 <script src="js/vendor/topojson-client.min.js"></script>

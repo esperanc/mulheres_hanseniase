@@ -10,10 +10,17 @@
     catch { return () => null; }
   })();
 
-  // Rampa sequencial em roxo: claro → escuro. A classe 0 é "zero casos".
-  const RAMP = ["#e2dbea", "#d6c0f0", "#b386e4", "#8d43cf", "#62209d", "#3a0f57"];
+  // Rampa sequencial no violeta da marca: claro → escuro. A classe 0 é "zero casos".
+  const RAMP = ["#e6e3ef", "#d5cef0", "#a99ce0", "#7a66c9", "#4e3a9e", "#2b1f63"];
 
   const INDICATORS = {
+    // Indicador inicial: o grau 2 de incapacidade física (GIF2) mostra melhor o
+    // problema, pois revela diagnóstico tardio.
+    g2d: {
+      label: "Diagnóstico tardio", unit: "por 1 milhão de habitantes",
+      breaks: [0.5, 1, 3, 5],
+      note: "Casos novos que já chegaram com grau 2 de incapacidade física (deformidades visíveis nas mãos, pés ou olhos), para cada 1 milhão de habitantes. Quanto maior, mais tarde as pessoas estão sendo diagnosticadas.",
+    },
     detection: {
       label: "Casos novos", unit: "por 100 mil habitantes",
       breaks: [0.1, 1, 5, 10],
@@ -23,11 +30,6 @@
       label: "Em tratamento", unit: "por 10 mil habitantes",
       breaks: [0.01, 0.1, 0.5, 1],
       note: "Quantas pessoas estavam em tratamento, para cada 10 mil habitantes. A OMS considera a doença eliminada como problema de saúde pública abaixo de 1 por 10 mil.",
-    },
-    g2d: {
-      label: "Diagnóstico tardio", unit: "por 1 milhão de habitantes",
-      breaks: [0.5, 1, 3, 5],
-      note: "Casos novos que já chegaram com incapacidade visível (grau 2), para cada 1 milhão de habitantes. Quanto maior, mais tarde as pessoas estão sendo diagnosticadas.",
     },
   };
 
@@ -49,7 +51,7 @@
   const initials = n => n.split(" ").filter(Boolean).map(p => p[0]).slice(0, 2).join("");
   const axisColor = a => a ? `var(--eixo-${a.id})` : "var(--roxo-600)";
   const R = 15;              // raio do retrato no mapa, em pixels de tela
-  const NEUTRAL = "#e6e0ee"; // países com a camada Impacto desligada
+  const NEUTRAL = "#e6e3ef"; // países com a camada Impacto desligada
 
   // Arco curvo (no plano projetado) entre dois pontos, sempre "para cima".
   function arcPath([x1, y1], [x2, y2]) {
@@ -99,7 +101,7 @@
       </div>
       <div class="mapa__legend"></div>
       <div class="mapa__people" role="list" aria-label="Mulheres no mapa"></div>
-      <p class="mapa__source">Fontes: Organização Mundial da Saúde (OMS); fronteiras: Natural Earth. Países-ilha pequenos aparecem como círculos.
+      <p class="mapa__source">Fontes: Organização Mundial da Saúde (OMS, 2025); fronteiras: Natural Earth. Países-ilha pequenos aparecem como círculos.
         Locais de nascimento e atuação aproximados, em validação.</p>`;
 
     const $ = s => root.querySelector(s);
@@ -200,7 +202,7 @@
 
     // ----- Dica (tooltip) -----
     const tip = $(".mapa__tip"), canvas = $(".mapa__canvas");
-    let ind = "detection", ranks = new Map(), pinned = null;
+    let ind = "g2d", ranks = new Map(), pinned = null;
     let showWomen = true, showImpact = true, selected = null;
     const activeAxes = new Set(D.AXES.map(a => a.id));
     const visible = d => !d.w.axis || activeAxes.has(d.w.axis.id);
@@ -292,7 +294,7 @@
           <span class="portrait" style="--size:72px;border-color:${axisColor(w.axis)}">${esc(initials(w.name))}${img}</span>
           <div><h3>${esc(w.name)}</h3><small>${esc(years)}${years && w.profession ? " · " : ""}${esc(w.profession)}</small></div>
         </div>
-        <span class="tag-eixo" style="--c:${axisColor(w.axis)}">${esc(w.axis?.label || w.axisRaw)}</span>
+        <span class="tag-eixo" style="--c:${axisColor(w.axis)};--on:${w.axis ? `var(--eixo-${w.axis.id}-on)` : "#fff"}">${esc(w.axis?.label || w.axisRaw)}</span>
         <dl class="mapa__trajectory">
           <dt>Nasceu em</dt><dd>${esc(birth)}</dd>
           <dt>Atuou em</dt><dd>${work || "—"}</dd>
