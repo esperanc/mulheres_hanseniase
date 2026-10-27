@@ -210,9 +210,12 @@
       ];
       const freq = {};
       D.women.forEach(w => [...w.keywords, ...w.fields].forEach(k => {
-        const key = k.toLowerCase().replace(/["“”]/g, ""); freq[key] = (freq[key] || 0) + 1;
+        // conta junto "ciências da saúde" e "ciencias da saude"
+        const label = k.toLowerCase().replace(/["“”]/g, ""), key = label.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const f = freq[key] ||= [label, 0]; f[1]++;
+        if (label > f[0]) f[0] = label;    // prefere a grafia acentuada
       }));
-      const words = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 30);
+      const words = Object.values(freq).sort((a, b) => b[1] - a[1]).slice(0, 30);
       const max = Math.max(...words.map(w => w[1]));
       const palette = ["var(--roxo-600)", "var(--roxo-800)", "var(--eixo-clinica)", "var(--eixo-tratamento)", "var(--roxo-400)"];
       return plan("cloud", "Como vai funcionar", [
@@ -244,19 +247,25 @@
 
   function renderHero(D) {
     $(".axes").append(h(D.AXES.map(a => `<li style="--c:var(--eixo-${a.id})">${a.label}</li>`).join("")));
-    $(".hero__portraits").append(h(D.women.map(w => portrait(w)).join("") +
-      `<span class="portrait portrait--more">+20</span>`));
+    // Até 12 retratos (com foto primeiro) e um contador com o restante.
+    const SHOW = 12;
+    const list = [...D.women].sort((a, b) => !!b.photo - !!a.photo).slice(0, SHOW);
+    const rest = D.women.length - list.length;
+    $(".hero__portraits").append(h(list.map(w => portrait(w)).join("") +
+      (rest > 0 ? `<span class="portrait portrait--more" title="e mais ${rest} mulheres">+${rest}</span>` : "")));
   }
 
   /* ---------- Início ------------------------------------------------------ */
   buildNav(); trackChapter(); trackScroll(); scrolly(); reveals();
 
   DATA.load().then(D => {
+    GLOSSARIO.setup(D);
+    GLOSSARIO.annotate($(".scrolly__steps"));
     renderHero(D);
     $$("[data-preview]").forEach(el => { el.innerHTML = PREVIEWS[el.dataset.preview](D); });
     wirePreviews();
-    const COMPONENTS = { mapa: MAPA.mount };
-    $$("[data-component]").forEach(el => COMPONENTS[el.dataset.component](el, D).catch(err => {
+    const COMPONENTS = { mapa: MAPA.mount, glossario: GLOSSARIO.mount };
+    $$("[data-component]").forEach(el => Promise.resolve().then(() => COMPONENTS[el.dataset.component](el, D)).catch(err => {
       console.error(err); el.innerHTML = `<p class="load-error">Não foi possível montar o painel: ${esc(err.message)}</p>`;
     }));
   }).catch(err => {

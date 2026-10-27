@@ -15,13 +15,26 @@ Depois, abra http://localhost:8123. Não há dependências nem build: HTML, CSS 
 ## Arquivos
 
 ```
-index.html        estrutura de todas as seções
-css/style.css     identidade visual (tokens de cor no :root)
-js/csv.js         parser CSV (detecta ',' ou ';', aspas, BOM)
-js/data.js        carrega as planilhas → DATA.women / DATA.quiz normalizados
-js/main.js        navegação, scrollytelling, prévias dos painéis
-data/             planilhas + fotos (fonte única de conteúdo)
+index.html            estrutura de todas as seções
+css/style.css         identidade visual (tokens de cor no :root)
+js/csv.js             parser CSV (detecta ',' ou ';', aspas, BOM)
+js/data.js            carrega as planilhas → DATA.women / quiz / glossary / epi
+js/mapa.js            atividade 1: mapa mundial + mapa de impacto (D3 + TopoJSON)
+js/glossario.js       capítulo do glossário + termos destacados no texto
+js/main.js            navegação, scrollytelling, prévias dos painéis
+js/vendor/            d3 e topojson-client (locais, para funcionar offline)
+data/mulheres.csv     planilha principal (uma linha por mulher)
+data/quiz.csv         perguntas e respostas do quiz
+data/glossario.csv    termos e definições
+data/mapa_epidemio.csv       indicadores da OMS por país
+data/coordenadas_proposta.csv  locais de nascimento e atuação (provisório, a validar)
+data/geo/countries.json      fronteiras (Natural Earth)
+data/photo/           fotos das mulheres e imagens do atlas
 ```
+
+Os CSV podem estar em UTF-8 (recomendado) ou Windows-1252 (padrão do Excel): o carregador detecta. Mas letras fora do alfabeto latino ocidental, como o "ł" e o "ń" de Błeńska, só sobrevivem em UTF-8. No Excel: *Salvar como → CSV UTF-8*; no LibreOffice: marcar *Editar configurações do filtro* e escolher *Unicode (UTF-8)*.
+
+Nomes são comparados por palavras, sem acentos: "Ruth Bowden" no quiz ou em `coordenadas_proposta.csv` encontra "Ruth Elizabeth Mary Bowden" na planilha principal.
 
 ## Estrutura narrativa (scrollytelling)
 
@@ -69,18 +82,25 @@ Segue o manual da marca da **23ª SNCT "Ciência Delas"** (`design_requirements/
 
 ## Ajustes sugeridos nas planilhas
 
-**Planilha principal**
-1. Para o mapa, criar colunas `cidade_nascimento`, `lat_nascimento`, `lon_nascimento`, `lat_atuacao`, `lon_atuacao`. Exemplo do problema: Ruth Bowden tem "Inglaterra" em *orígem*, mas nasceu na Índia, segundo a minibio.
-2. Para a rede, criar uma coluna `instituicoes` com siglas padronizadas separadas por `;` (ex.: `OMS; Fiocruz; UFRJ`). Hoje o texto livre permite detectar só 2 conexões.
-3. Para os contadores, criar uma coluna `papel` (pesquisadora / médica / ativista / gestora / liderança comunitária). Não dá para extrair isso com segurança de *formação_profissão*.
-4. Para os stories, criar uma coluna "Você sabia? (curto)" com até cerca de 200 caracteres. Os textos atuais são longos demais para um cartão.
-5. Criar as colunas `credito_foto` / `licenca_foto` e `fontes`. São essenciais numa página pública.
-6. Criar um `ano_marco` (ano da principal contribuição) para posicionar cada mulher na linha do tempo. Hoje a página usa o início de *década principal*.
+**Planilha principal (`mulheres.csv`)**
+1. **Fotos:** 23 das 29 mulheres não têm o arquivo correspondente em `data/photo/` (a página mostra as iniciais). Atenção a `janninebenso.jpg` (o arquivo é `janineebenso.jpg`) e a `jeanwatson` sem extensão na linha repetida.
+2. **Jean Margaret Watson** aparece duas vezes. A página usa só a primeira linha.
+3. **Maria Esther Noviski Gallo:** a minibio a chama de "Maria Eugênia Novisk Gallo", e a foto se chama `mariaeugenia.jpg`. Confirmar o nome.
+4. **Ruth Bowden:** *orígem* diz "London, England", mas a minibio diz que ela nasceu na Índia. O mapa segue a minibio.
+5. **latitude/longitude** da planilha estão em formatos misturados (`22.572.646`, `52,16° N`, `9°02′`) e alguns valores estão errados (Wanda: lon = lat; Alice Ball: lon −0,17; Alice Tibiriçá: coordenadas da Fiocruz). Por isso o mapa usa `coordenadas_proposta.csv`, que tem as 29 mulheres e uma coluna de confiança. Sugestão: trazer para a planilha principal as colunas `cidade_nascimento`, `pais_nascimento_iso3`, `lat_nascimento`, `lon_nascimento` e `locais_atuacao` (formato `Cidade|ISO3|lat|lon; …`, com ponto decimal). Elas têm prioridade sobre o arquivo provisório.
+6. **eixo** pode ter vários valores separados por `;` ou `/`. O primeiro é o principal (cor do retrato); os demais aparecem como etiquetas e contam no filtro do mapa.
+7. Coluna opcional **`nome_curto`** para o nome usado em cartões e no mapa (ex.: "Maria Leide", "Cristina Pessolani", "Madre Teresa"). Sem ela, a página usa primeiro + último nome.
+8. Continuam úteis: `instituicoes` padronizadas (rede), `papel` (contadores), "Você sabia? (curto)" (stories), `credito_foto` / `licenca_foto` / `fontes` e `ano_marco` (linha do tempo).
 
-**Planilha do quiz**
-- Usa `;` como separador e tem pontos finais em algumas respostas. O código já trata as duas coisas.
-- Colunas úteis: `alternativa_2..4` (opcionais), `explicacao` (1–2 frases mostradas após a resposta), `eixo`, `nivel` (fácil/médio).
-- Várias respostas (Maria Leide, Gilla Kaplan, Annemieke Geluk, Charlotte Avanzi, Olivia Breitha, Euzenir Sarno) ainda não estão na planilha principal. A página vai ligar cada resposta ao perfil pelo nome.
+**Quiz (`quiz.csv`)**
+- Convertido para UTF-8; "Wanda B?e?ska" (caracteres perdidos na exportação) corrigido para Błeńska.
+- **Gilla Kaplan** ainda não está na planilha principal. As outras 13 respostas já se ligam a um perfil.
+- Ruth Bowden responde a duas perguntas parecidas (regeneração dos nervos / compreensão anatômica). Vale trocar uma delas.
+- Colunas úteis: `alternativa_2..4`, `explicacao`, `eixo`, `nivel`.
+
+**Glossário (`glossario.csv`)**
+- Convertido para UTF-8. Corrigidos: chaumolgra → chaulmoogra, poliquimoterapia → poliquimioterapia, colônica → colônia, micobacteria → micobactéria. **Repassar essas correções para a planilha `.xlsx`**, senão voltam na próxima exportação.
+- "estigma" aparece duas vezes: a página junta as duas definições num só verbete.
 
 ## Próximos passos sugeridos
 1. Completar a planilha principal com as colunas acima.

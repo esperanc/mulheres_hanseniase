@@ -1,9 +1,10 @@
 /* Camada de dados: carrega as planilhas e normaliza os campos.
-   Todos os painéis consomem DATA.women, DATA.quiz e DATA.epi — nunca o CSV bruto. */
+   Todos os painéis consomem DATA.women, DATA.quiz, DATA.glossary e DATA.epi — nunca o CSV bruto. */
 (function () {
   const FILES = {
     women:  "data/mulheres.csv",
-    quiz:   "data/2026SNCT Mulheres na Hanseníase_quiz interativo.csv",
+    quiz:   "data/quiz.csv",
+    glossary: "data/glossario.csv",
     epi:    "data/mapa_epidemio.csv",
     // Coordenadas provisórias (a validar) enquanto a planilha principal não tem
     // as colunas de nascimento/atuação. Colunas da planilha principal têm prioridade.
@@ -20,16 +21,31 @@
     { id: "clinica",     label: "Pesquisa clínica",        match: /cl[ií]nic/i },
     { id: "vivencia",    label: "Vivência da hanseníase",  match: /viv[eê]nci/i },
   ];
-  const axisOf = s => AXES.find(a => a.match.test(s)) || null;
-  const splitList = s => (s || "").split(/[;,]/).map(x => x.trim().replace(/\.$/, "")).filter(Boolean);
+  // "mulheres com vivência; saúde pública" ou "tratamento/reabilitação" → eixos na ordem da planilha
+  const axesOf = s => [...new Set((s || "").split(/[;\/]/)
+    .map(t => AXES.find(a => a.match.test(t))).filter(Boolean))];
+
+  // Nomes comparados por palavras, sem acentos nem parênteses, para casar
+  // "Ruth Bowden" ↔ "Ruth Elizabeth Mary Bowden" ou "Maria Leide" ↔ "Maria Leide Wand-Del-Rey de Oliveira".
+  const STOP = new Set(["de", "da", "do", "das", "dos", "e"]);
+  const nameTokens = s => CSV.slugKey((s || "").replace(/\(.*?\)/g, "")).split("_").filter(t => t && !STOP.has(t));
+  function sameName(short, full) {
+    const a = nameTokens(short), b = new Set(nameTokens(full));
+    return a.length >= 2 && a.every(t => b.has(t));
+  }
+  const findByName = (list, name, key = x => x.name) =>
+    list.find(x => CSV.slugKey(key(x)) === CSV.slugKey(name)) || list.find(x => sameName(name, key(x)));
+  const EMPTY = /^(sem registro|n[aã]o se aplica|-)$/i;
+  const splitList = s => (s || "").split(/[;,]/).map(x => x.trim().replace(/\.$/, "")).filter(x => x && !EMPTY.test(x));
   const num = s => (/^\d{3,4}$/.test(s) ? +s : null);
   const dec = s => { const v = parseFloat(String(s ?? "").replace(",", ".")); return Number.isFinite(v) ? v : null; };
 
   // Foto local (nome de arquivo) ou URL externa que aponte direto para uma imagem.
   function photoPath(s) {
-    const first = (s || "").trim().split(/\s+/)[0];
-    if (!first) return null;
-    if (!/^https?:/.test(first)) return PHOTO_DIR + first;
+    const v = (s || "").trim();
+    if (!v) return null;
+    if (!/^https?:/.test(v)) return PHOTO_DIR + v;      // nomes de arquivo podem ter espaços
+    const first = v.split(/\s+/)[0];
     return /\.(jpe?g|png|webp|gif)(\?|$)/i.test(first) ? first : null;
   }
 
@@ -54,12 +70,15 @@
 
   function normalizeWoman(r, coords) {
     const name = r.nome.replace(/\s+/g, " ").trim();
+    const axes = axesOf(r.eixo);
     return {
       id: CSV.slugKey(name),
       name,
-      shortName: name.split(" ").filter((_, i, a) => i === 0 || i === a.length - 1).join(" "),
+      // Coluna opcional "nome_curto"; senão, o apelido entre parênteses ou primeiro + último nome.
+      shortName: r.nome_curto || (name.match(/\((.+)\)/)?.[1].replace(/ de .*$/, "")) ||
+        name.split(" ").filter((_, i, a) => i === 0 || i === a.length - 1).join(" "),
       region: r.regiao, regionCode: r.codregiao,
-      axis: axisOf(r.eixo), axisRaw: r.eixo,
+      axis: axes[0] || null, axes, axisRaw: r.eixo,
       origin: r.origem,
       born: num(r.anonascimento), died: num(r.anofalecimento),
       profession: r.formacao_profissao,
@@ -73,12 +92,25 @@
       collaborators: [r.colaboradoras, r.instituicoescolaboradores].filter(x => x && !/^(sem registro|n[aã]o se aplica)$/i.test(x)).join("; "),
       whoAmI: r.quem_sou_eu,
       didYouKnow: r.voce_sabia,
-      ...geoOf(r, coords.get(CSV.slugKey(name))),
+      ...geoOf(r, findByName(coords, name, c => c.nome)),
     };
   }
 
-  function normalizeQuiz(r) {
-    return { question: r.pergunta, answer: r.resposta.replace(/\.$/, "").trim() };
+  function normalizeQuiz(r, women) {
+    const answer = r.resposta.replace(/\.$/, "").trim();
+    return { question: r.pergunta, answer, woman: findByName(women, answer) || null };
+  }
+
+  // Termos repetidos (ex.: "estigma") viram um verbete com várias acepções.
+  function normalizeGlossary(rows) {
+    const map = new Map();
+    rows.filter(r => r.termo && r.significado).forEach(r => {
+      const term = r.termo.trim(), key = CSV.slugKey(term);
+      const def = r.significado.trim().replace(/^./, c => c.toUpperCase()).replace(/([^.])$/, "$1.");
+      if (map.has(key)) map.get(key).defs.push(def);
+      else map.set(key, { id: key, term, defs: [def] });
+    });
+    return [...map.values()].sort((a, b) => a.term.localeCompare(b.term, "pt-BR"));
   }
 
   // Indicadores da OMS por país. "No data" → null (≠ zero).
@@ -94,18 +126,27 @@
   async function loadCSV(path) {
     const res = await fetch(encodeURI(path));
     if (!res.ok) throw new Error(`${res.status} ao carregar ${path}`);
-    return CSV.toObjects(CSV.parse(await res.text()));
+    // O Excel costuma exportar CSV em Windows-1252; tenta UTF-8 e, se falhar, cai para ele.
+    const buf = await res.arrayBuffer();
+    let text;
+    try { text = new TextDecoder("utf-8", { fatal: true }).decode(buf); }
+    catch { text = new TextDecoder("windows-1252").decode(buf); }
+    return CSV.toObjects(CSV.parse(text));
   }
 
   window.DATA = {
     AXES,
     async load() {
-      const [w, q, e, c] = await Promise.all(
-        [FILES.women, FILES.quiz, FILES.epi, FILES.coords].map(loadCSV));
-      const coords = new Map(c.map(r => [CSV.slugKey(r.nome.replace(/\s+/g, " ").trim()), r]));
-      this.women = w.filter(r => r.nome).map(r => normalizeWoman(r, coords));
+      const [w, q, e, c, g] = await Promise.all(
+        [FILES.women, FILES.quiz, FILES.epi, FILES.coords, FILES.glossary].map(loadCSV));
+      const coords = c.filter(r => r.nome);
+      // Linhas repetidas na planilha (mesmo nome) entram uma vez só.
+      const seen = new Set();
+      this.women = w.filter(r => r.nome).map(r => normalizeWoman(r, coords))
+        .filter(x => !seen.has(x.id) && seen.add(x.id));
       this.epi = new Map(e.filter(r => r.codpais).map(normalizeEpi).map(d => [d.iso3, d]));
-      this.quiz = q.filter(r => r.pergunta).map(normalizeQuiz);
+      this.quiz = q.filter(r => r.pergunta).map(r => normalizeQuiz(r, this.women));
+      this.glossary = normalizeGlossary(g);
       return this;
     },
   };

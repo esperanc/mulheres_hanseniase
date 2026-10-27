@@ -575,3 +575,40 @@ img { max-width: 100%; display: block; }
   .mapa__stats.is-off { display: none; }
   .mapa__zoom button { width: 28px; height: 28px; font-size: 15px; }
 }
+
+.mapa__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* --- Glossário ------------------------------------------------------------ */
+.panel--auto { min-height: 0; }
+.gloss-box { display: grid; gap: 16px; }
+.gloss-search input {
+  width: 100%; max-width: 420px; font: inherit; font-size: 17px; padding: 12px 18px;
+  border: 2px solid var(--roxo-200); border-radius: 99px; background: #fff; color: var(--ink);
+}
+.gloss-search input:focus { outline: none; border-color: var(--roxo-600); }
+.gloss-count { margin: 0; font-size: 14px; color: var(--ink-soft); }
+.gloss-list { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.gloss-item { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.gloss-item[hidden] { display: none; }
+.gloss-item:target { border-color: var(--ambar); box-shadow: 0 0 0 3px var(--ambar); }
+.gloss-item dt { font-weight: 800; color: var(--roxo-700); margin-bottom: 4px; }
+.gloss-item dt::first-letter { text-transform: uppercase; }
+.gloss-item dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+.gloss-item dd + dd { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+
+/* termo marcado no texto */
+.gloss {
+  font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: help;
+  text-decoration: underline dotted var(--roxo-500) 2px; text-underline-offset: 3px;
+}
+.gloss:hover, .gloss[aria-expanded="true"] { background: var(--roxo-100); border-radius: 4px; }
+.gloss-pop {
+  position: fixed; z-index: 70; width: min(320px, calc(100vw - 16px));
+  background: var(--roxo-900); color: #fff; border-radius: 14px; padding: 14px 16px;
+  box-shadow: 0 16px 40px rgba(27, 18, 64, .35); font-size: 15px; line-height: 1.5;
+}
+.gloss-pop[hidden] { display: none; }
+.gloss-pop b { display: block; color: var(--ambar); margin-bottom: 4px; }
+.gloss-pop b::first-letter { text-transform: uppercase; }
+.gloss-pop p { margin: 0 0 8px; }
+.gloss-pop a { font-size: 13px; font-weight: 700; color: var(--roxo-200); }

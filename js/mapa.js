@@ -14,12 +14,11 @@
   const RAMP = ["#e6e3ef", "#d5cef0", "#a99ce0", "#7a66c9", "#4e3a9e", "#2b1f63"];
 
   const INDICATORS = {
-    // Indicador inicial: o grau 2 de incapacidade física (GIF2) mostra melhor o
-    // problema, pois revela diagnóstico tardio.
+    // Indicador inicial: taxa de grau 2 de incapacidade física (GIF2) da OMS.
     g2d: {
-      label: "Diagnóstico tardio", unit: "por 1 milhão de habitantes",
+      label: "Grau 2 de incapacidade", unit: "por 1 milhão de habitantes",
       breaks: [0.5, 1, 3, 5],
-      note: "Casos novos que já chegaram com grau 2 de incapacidade física (deformidades visíveis nas mãos, pés ou olhos), para cada 1 milhão de habitantes. Quanto maior, mais tarde as pessoas estão sendo diagnosticadas.",
+      note: "Taxa de casos novos com grau 2 de incapacidade física (deformidades visíveis nas mãos, nos pés ou nos olhos), para cada 1 milhão de habitantes.",
     },
     detection: {
       label: "Casos novos", unit: "por 100 mil habitantes",
@@ -76,7 +75,7 @@
         </div>
       </div>
       <div class="mapa__axes" role="group" aria-label="Filtrar por eixo">
-        ${D.AXES.filter(a => D.women.some(w => w.axis === a)).map(a =>
+        ${D.AXES.filter(a => D.women.some(w => w.axes.includes(a))).map(a =>
           `<button class="chip-toggle" aria-pressed="true" data-axis="${a.id}" style="--c:var(--eixo-${a.id})">${a.label}</button>`).join("")}
       </div>
       <p class="mapa__note"></p>
@@ -205,7 +204,7 @@
     let ind = "g2d", ranks = new Map(), pinned = null;
     let showWomen = true, showImpact = true, selected = null;
     const activeAxes = new Set(D.AXES.map(a => a.id));
-    const visible = d => !d.w.axis || activeAxes.has(d.w.axis.id);
+    const visible = d => !d.w.axes.length || d.w.axes.some(a => activeAxes.has(a.id));   // basta um eixo ativo
 
     function tipHTML(f) {
       const d = epi.get(f.id), m = INDICATORS[ind];
@@ -294,7 +293,8 @@
           <span class="portrait" style="--size:72px;border-color:${axisColor(w.axis)}">${esc(initials(w.name))}${img}</span>
           <div><h3>${esc(w.name)}</h3><small>${esc(years)}${years && w.profession ? " · " : ""}${esc(w.profession)}</small></div>
         </div>
-        <span class="tag-eixo" style="--c:${axisColor(w.axis)};--on:${w.axis ? `var(--eixo-${w.axis.id}-on)` : "#fff"}">${esc(w.axis?.label || w.axisRaw)}</span>
+        <div class="mapa__tags">${(w.axes.length ? w.axes : [null]).map(a =>
+          `<span class="tag-eixo" style="--c:${axisColor(a)};--on:${a ? `var(--eixo-${a.id}-on)` : "#fff"}">${esc(a?.label || w.axisRaw)}</span>`).join("")}</div>
         <dl class="mapa__trajectory">
           <dt>Nasceu em</dt><dd>${esc(birth)}</dd>
           <dt>Atuou em</dt><dd>${work || "—"}</dd>
@@ -303,6 +303,8 @@
         ${countries.length ? `<p class="preview-label">${m.label} onde ela atuou</p><ul class="mapa__impact">${impact}</ul>` : ""}
         ${w.bio ? `<details><summary>Biografia</summary><p>${esc(w.bio)}</p></details>` : ""}
         ${w.geoConfidence === "baixa" ? `<p class="mapa__approx">Os locais desta trajetória no mapa são aproximados.</p>` : ""}`;
+      window.GLOSSARIO?.annotate(card.querySelector(".mapa__contrib"));
+      window.GLOSSARIO?.annotate(card.querySelector("details p"));
       card.querySelector(".mapa__close").addEventListener("click", () => { select(null); zoom.transform(svg.transition().duration(600), d3.zoomIdentity); });
     }
 
