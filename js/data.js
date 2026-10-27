@@ -93,6 +93,12 @@
     };
   }
 
+  // Nomes curtos que fogem da regra "primeiro + último nome" (até a planilha ter a coluna nome_curto).
+  const SHORT = {
+    maria_leide_wand_del_rey_de_oliveira: "Maria Leide",
+    maria_cristina_vidal_pessolani: "Cristina Pessolani",
+  };
+
   function normalizeWoman(r, coords) {
     const name = r.nome.replace(/\s+/g, " ").trim();
     const axes = axesOf(r.eixo);
@@ -100,7 +106,7 @@
       id: CSV.slugKey(name),
       name,
       // Coluna opcional "nome_curto"; senão, o apelido entre parênteses ou primeiro + último nome.
-      shortName: r.nome_curto || (name.match(/\((.+)\)/)?.[1].replace(/ de .*$/, "")) ||
+      shortName: r.nome_curto || SHORT[CSV.slugKey(name)] || (name.match(/\((.+)\)/)?.[1].replace(/ de .*$/, "")) ||
         name.split(" ").filter((_, i, a) => i === 0 || i === a.length - 1).join(" "),
       region: r.regiao, regionCode: r.codregiao,
       axis: axes[0] || null, axes, axisRaw: r.eixo,
