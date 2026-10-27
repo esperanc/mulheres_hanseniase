@@ -123,9 +123,9 @@
     </div>
   </section>
 
-  <!-- PAINÉIS INTERATIVOS (placeholders) ================================= -->
-  <!-- Cada painel: cabeçalho + "palco" onde o componente interativo será montado.
-       O conteúdo do palco é gerado em js/main.js a partir de data/*.csv. -->
+  <!-- PAINÉIS INTERATIVOS ================================================ -->
+  <!-- Cada painel: cabeçalho + "palco" (data-component) onde a atividade é montada
+       pelo módulo correspondente em js/, a partir de data/*.csv. -->
 
   <section id="mapa" class="panel" data-chapter="Onde elas estão?" data-icon="map">
     <header class="panel__head">
@@ -140,54 +140,54 @@
     <header class="panel__head">
       <p class="kicker">Atividade 2 · Linha do tempo + gerações</p>
       <h2>150 anos de história, de 1873 a 2026</h2>
-      <p class="lede">Das primeiras observações do bacilo às estratégias atuais da OMS. Role a linha do tempo e veja como cada geração de mulheres continuou o trabalho da anterior.</p>
+      <p class="lede">Da descoberta do bacilo às estratégias atuais da OMS. Arraste a linha do tempo para os lados, toque nos marcos para ler e nos retratos para conhecer cada mulher.</p>
     </header>
-    <div class="stage-frame" data-preview="timeline"></div>
+    <div class="stage-frame" data-component="linha"></div>
   </section>
 
   <section id="quem-sou-eu" class="panel panel--dark" data-chapter="Quem sou eu?" data-icon="mask">
     <header class="panel__head">
       <p class="kicker">Atividade 3 · Jogo</p>
       <h2>Quem sou eu?</h2>
-      <p class="lede">Leia as pistas e tente adivinhar quem é. Vire o cartão para descobrir!</p>
+      <p class="lede">Leia a pista e escolha quem está falando. Acertar com uma pista vale 3 pontos; cada pista extra vale um ponto a menos.</p>
     </header>
-    <div class="stage-frame" data-preview="quem"></div>
+    <div class="stage-frame" data-component="quem"></div>
   </section>
 
   <section id="voce-sabia" class="panel" data-chapter="Você sabia?" data-icon="phone">
     <header class="panel__head">
       <p class="kicker">Atividade 4 · Histórias</p>
       <h2>Você sabia?</h2>
-      <p class="lede">Curiosidades em cartões verticais, no estilo dos stories. Deslize para o lado.</p>
+      <p class="lede">Curiosidades no estilo dos stories. Toque nas laterais para avançar ou voltar, segure para pausar, ou escolha uma história nas bolinhas.</p>
     </header>
-    <div class="stage-frame stage-frame--bleed" data-preview="stories"></div>
+    <div class="stage-frame" data-component="stories"></div>
   </section>
 
   <section id="rede" class="panel panel--dark" data-chapter="Rede de colaboração" data-icon="network">
     <header class="panel__head">
-      <p class="kicker">Atividade 5 · Constelação</p>
+      <p class="kicker">Atividade 5 · Rede de colaboração</p>
       <h2>Ninguém faz ciência sozinha</h2>
-      <p class="lede">Uma constelação liga pesquisadoras e instituições — Fiocruz, OMS, UFRJ, LSHTM, MORHAN, ALERT e outras. Toque em uma estrela para ver suas conexões.</p>
+      <p class="lede">Uma constelação liga as mulheres às instituições onde atuaram juntas, como Fiocruz, MORHAN, ALERT e LSHTM, e às colegas com quem trabalharam. Toque numa estrela ou num retrato para ver as conexões.</p>
     </header>
-    <div class="stage-frame" data-preview="rede"></div>
+    <div class="stage-frame" data-component="rede"></div>
   </section>
 
   <section id="quiz" class="panel panel--tint" data-chapter="Quiz" data-icon="quiz">
     <header class="panel__head">
       <p class="kicker">Atividade 6 · Quiz</p>
       <h2>Teste o que você aprendeu</h2>
-      <p class="lede">Perguntas de múltipla escolha sobre as mulheres e as descobertas que você conheceu nesta página.</p>
+      <p class="lede">Oito perguntas de múltipla escolha sobre as mulheres e as descobertas que você conheceu nesta página.</p>
     </header>
-    <div class="stage-frame" data-preview="quiz"></div>
+    <div class="stage-frame" data-component="quiz"></div>
   </section>
 
   <section id="palavras" class="panel" data-chapter="Mulheres que mudaram a história" data-icon="cloud">
     <header class="panel__head">
       <p class="kicker">Atividade 7 · Nuvem de palavras + contador</p>
       <h2>Mulheres que mudaram a história</h2>
-      <p class="lede">Quantas são, o que fazem e as palavras que mais aparecem em suas biografias.</p>
+      <p class="lede">Quantas são, o que fazem e as palavras que mais aparecem em suas biografias. Toque num número ou numa palavra para ver quem são.</p>
     </header>
-    <div class="stage-frame" data-preview="palavras"></div>
+    <div class="stage-frame" data-component="palavras"></div>
   </section>
 
   <!-- GLOSSÁRIO ========================================================== -->
@@ -208,9 +208,13 @@
       <p>Se você notar uma mancha na pele com alteração de sensibilidade, procure a Unidade Básica de Saúde mais próxima. O diagnóstico e o tratamento são gratuitos no SUS.</p>
       <div class="outro__grid">
         <div><h3>Realização</h3><p>[equipe / instituição]</p></div>
-        <div><h3>Fontes</h3><p>[referências bibliográficas e créditos das imagens]</p></div>
+        <div><h3>Fontes</h3><p class="outro__sources">Indicadores: Organização Mundial da Saúde. Fronteiras: Natural Earth. Lista completa de referências abaixo.</p></div>
         <div><h3>SNCT 2026</h3><p>23ª Semana Nacional de Ciência e Tecnologia · Ciência Delas</p></div>
       </div>
+      <details class="fontes" id="fontes">
+        <summary>Referências e links <span class="fontes__n"></span></summary>
+        <div class="fontes__body"></div>
+      </details>
     </div>
   </section>
 
@@ -224,9 +228,17 @@
 <script src="js/vendor/d3.min.js"></script>
 <script src="js/vendor/topojson-client.min.js"></script>
 <script src="js/csv.js"></script>
+<script src="js/util.js"></script>
 <script src="js/data.js"></script>
 <script src="js/glossario.js"></script>
+<script src="js/perfil.js"></script>
 <script src="js/mapa.js"></script>
+<script src="js/linha.js"></script>
+<script src="js/quem.js"></script>
+<script src="js/stories.js"></script>
+<script src="js/rede.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/palavras.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

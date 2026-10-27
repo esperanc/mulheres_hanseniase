@@ -401,6 +401,15 @@
 
     render();
     applyFilters();
+
+    // Atalho para outras atividades: rola até o mapa e abre a mulher.
+    window.MAPA.show = id => {
+      const d = women.find(x => x.w.id === id); if (!d) return;
+      if (!showWomen) $(".mapa__layers [data-layer=women]").click();
+      if (!visible(d)) root.querySelectorAll(".mapa__axes [aria-pressed=false]").forEach(b => b.click());
+      root.closest("section").scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => select(d), 500);
+    };
   }
 
   window.MAPA = { mount };

@@ -40,9 +40,11 @@
     const e = entries.find(x => x.id === btn.dataset.term); if (!e) return;
     if (openBtn === btn) return close();
     close(); ensurePop();
+    (btn.closest("dialog") || document.body).append(pop);   // dentro de um modal, a caixinha precisa estar no modal
     pop.innerHTML = `<b>${esc(e.term)}</b>${e.defs.map(d => `<p>${esc(d)}</p>`).join("")}
       <a href="#glossario-${e.id}">ver no glossário</a>`;
     pop.setAttribute("aria-label", e.term);
+    pop.querySelector("a").addEventListener("click", () => { pop.closest("dialog")?.close(); close(); });
     pop.hidden = false; openBtn = btn; btn.setAttribute("aria-expanded", "true");
     place(btn);
   }

@@ -5,6 +5,8 @@
     women:  "data/mulheres.csv",
     quiz:   "data/quiz.csv",
     glossary: "data/glossario.csv",
+    milestones: "data/marcos.csv",     // marcos históricos da linha do tempo (a validar)
+    refs: "data/links_e_referencias.csv",   // fontes listadas no fim da página e nos perfis
     epi:    "data/mapa_epidemio.csv",
     // Coordenadas provisórias (a validar) enquanto a planilha principal não tem
     // as colunas de nascimento/atuação. Colunas da planilha principal têm prioridade.
@@ -34,7 +36,30 @@
     return a.length >= 2 && a.every(t => b.has(t));
   }
   const findByName = (list, name, key = x => x.name) =>
-    list.find(x => CSV.slugKey(key(x)) === CSV.slugKey(name)) || list.find(x => sameName(name, key(x)));
+    list.find(x => CSV.slugKey(key(x)) === CSV.slugKey(name)) || list.find(x => sameName(name, key(x))) ||
+    list.find(x => sameName(name, key(x).replace(/[()]/g, " ")));   // "Madre Teresa de Calcutá" está entre parênteses
+
+  // Referências: URL, citação ou citação com <URL>. A coluna "obs" pode trazer o nome da mulher;
+  // além disso, um nome ou sobrenome longo no endereço (ex.: …/quem-foi-eunice-weaver) também liga a referência a ela.
+  function normalizeRefs(rows, women) {
+    const keys = Object.keys(rows[0] || {});
+    const [kText, kObs] = [keys[0], keys[1]];
+    return rows.filter(r => r[kText]).map(r => {
+      const raw = r[kText].trim();
+      const url = (raw.match(/https?:\/\/[^\s<>"]+/) || [])[0]?.replace(/[?&]utm[^#]*$/, "") || null;
+      const cite = raw.replace(/<?https?:\/\/[^\s<>"]+>?/, "").replace(/^MLA style:\s*/i, "").replace(/\s*[.;]\s*$/, "").trim();
+      const note = (r[kObs] || "").trim();
+      let host = null; try { host = url && new URL(url).hostname.replace(/^www\./, ""); } catch { }
+      // "ResenhaMariaEugeniaGallo.pdf" → "resenha maria eugenia gallo pdf"
+      const hay = ` ${U.fold(`${url || ""} ${cite}`.replace(/([a-z])([A-Z])/g, "$1 $2")).replace(/[^a-z]+/g, " ")} `;
+      const byText = women.filter(w => nameTokens(w.name.replace(/[()]/g, " "))
+        .some((t, k, all) => (t.length >= 6 || (k === all.length - 1 && t.length >= 5)) && hay.includes(` ${t} `)));
+      const byNote = note && findByName(women, note);
+      const linked = [...new Set([byNote, ...byText].filter(Boolean))];
+      // coluna opcional "titulo": rótulo legível para links (senão, a citação ou o endereço)
+      return { url, cite: (r.titulo || "").trim() || cite, host, women: linked };
+    });
+  }
   const EMPTY = /^(sem registro|n[aã]o se aplica|-)$/i;
   const splitList = s => (s || "").split(/[;,]/).map(x => x.trim().replace(/\.$/, "")).filter(x => x && !EMPTY.test(x));
   const num = s => (/^\d{3,4}$/.test(s) ? +s : null);
@@ -137,8 +162,8 @@
   window.DATA = {
     AXES,
     async load() {
-      const [w, q, e, c, g] = await Promise.all(
-        [FILES.women, FILES.quiz, FILES.epi, FILES.coords, FILES.glossary].map(loadCSV));
+      const [w, q, e, c, g, m, r] = await Promise.all(
+        [FILES.women, FILES.quiz, FILES.epi, FILES.coords, FILES.glossary, FILES.milestones, FILES.refs].map(loadCSV));
       const coords = c.filter(r => r.nome);
       // Linhas repetidas na planilha (mesmo nome) entram uma vez só.
       const seen = new Set();
@@ -147,6 +172,11 @@
       this.epi = new Map(e.filter(r => r.codpais).map(normalizeEpi).map(d => [d.iso3, d]));
       this.quiz = q.filter(r => r.pergunta).map(r => normalizeQuiz(r, this.women));
       this.glossary = normalizeGlossary(g);
+      this.milestones = m.filter(r => num(r.ano)).map(r => ({
+        year: num(r.ano), title: r.titulo, text: r.texto, axis: axesOf(r.eixo)[0] || null, scope: r.escopo,
+      })).sort((a, b) => a.year - b.year);
+      this.refs = normalizeRefs(r, this.women);
+      this.women.forEach(x => x.refs = this.refs.filter(ref => ref.women.includes(x)));
       return this;
     },
   };

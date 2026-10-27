@@ -18,14 +18,24 @@ Depois, abra http://localhost:8123. Não há dependências nem build: HTML, CSS 
 index.html            estrutura de todas as seções
 css/style.css         identidade visual (tokens de cor no :root)
 js/csv.js             parser CSV (detecta ',' ou ';', aspas, BOM)
-js/data.js            carrega as planilhas → DATA.women / quiz / glossary / epi
+js/data.js            carrega as planilhas → DATA.women / quiz / glossary / milestones / epi
+js/util.js            funções comuns (retratos, etiquetas de eixo, sorteio…)
+js/perfil.js          janela de perfil de uma mulher, aberta por todas as atividades
 js/mapa.js            atividade 1: mapa mundial + mapa de impacto (D3 + TopoJSON)
+js/linha.js           atividade 2: linha do tempo + gerações
+js/quem.js            atividade 3: jogo "Quem sou eu?"
+js/stories.js         atividade 4: "Você sabia?" em formato de stories
+js/rede.js            atividade 5: rede de colaboração (D3, grafo de forças)
+js/quiz.js            atividade 6: quiz
+js/palavras.js        atividade 7: contadores por papel + nuvem de palavras
 js/glossario.js       capítulo do glossário + termos destacados no texto
-js/main.js            navegação, scrollytelling, prévias dos painéis
+js/main.js            navegação, scrollytelling, montagem das atividades
 js/vendor/            d3 e topojson-client (locais, para funcionar offline)
 data/mulheres.csv     planilha principal (uma linha por mulher)
 data/quiz.csv         perguntas e respostas do quiz
 data/glossario.csv    termos e definições
+data/marcos.csv       marcos históricos da linha do tempo (ano;titulo;texto;eixo;escopo)
+data/links_e_referencias.csv  fontes (referência;obs;titulo) — lista no fim da página e "Para saber mais" nos perfis
 data/mapa_epidemio.csv       indicadores da OMS por país
 data/coordenadas_proposta.csv  locais de nascimento e atuação (provisório, a validar)
 data/geo/countries.json      fronteiras (Natural Earth)
@@ -102,9 +112,27 @@ Segue o manual da marca da **23ª SNCT "Ciência Delas"** (`design_requirements/
 - Convertido para UTF-8. Corrigidos: chaumolgra → chaulmoogra, poliquimoterapia → poliquimioterapia, colônica → colônia, micobacteria → micobactéria. **Repassar essas correções para a planilha `.xlsx`**, senão voltam na próxima exportação.
 - "estigma" aparece duas vezes: a página junta as duas definições num só verbete.
 
+## Fontes e referências
+
+`data/links_e_referencias.csv` tem três colunas: a referência (URL, citação ou citação com `<URL>`), `obs` e `titulo`.
+- **titulo** (opcional): rótulo legível do link. Sem ele, a página usa a citação ou o último trecho do endereço, que nem sempre é claro.
+- **obs**: se trouxer o nome de uma mulher da página (ex.: "Laila de Laguiche"), a referência aparece no perfil dela. Um nome ou sobrenome dela no endereço (ex.: `…/quem-foi-eunice-weaver`) também faz essa ligação. Outras observações não aparecem no site.
+- As referências sem mulher associada aparecem em "Sobre hanseníase e sua história".
+
+## Como cada atividade usa os dados
+
+| Atividade | Colunas usadas | Regras |
+|---|---|---|
+| Linha do tempo | `década principal` (início), `data/marcos.csv` | Mulher posicionada no início da década; sem década, nascimento + 30. Gerações: até 1939 · 1940–79 · 1980–99 · 2000+. |
+| Quem sou eu? | `"Quem sou eu?"`, `orígem`, `cidade/pais_atuacao`, `formação_profissão`, `eixo` | 5 cartões por rodada; pista 1 = fala da mulher (nome escondido), pista 2 = origem e atuação, pista 3 = formação e eixo. 3/2/1 pontos. |
+| Você sabia? | `"Você sabia?"` | Tempo de cada história proporcional ao texto (5 s + 45 ms por caractere). Só avança quando está visível; não avança sozinha com "reduzir movimento" ligado. |
+| Rede | `instituição_atuacao`, `colaboradoras`, `instituiçõesColaboradores` | Instituições reconhecidas por uma lista de nomes/siglas em `js/rede.js` (só entram as ligadas a 2+ mulheres). Colaboração entre mulheres: mesmo sobrenome + mesma inicial. |
+| Quiz | `data/quiz.csv` | 8 perguntas sorteadas; alternativas erradas = nomes de outras mulheres. Depois da resposta, mostra a 1ª frase de *contribuição*. |
+| Mulheres que mudaram a história | `formação_profissão`, `eixo`, `palavras-chave`, `areaconhecimento` | Papéis deduzidos por palavras-chave (médica, pesquis…, enferm…, missionária) e pelos eixos. Uma coluna `papel` tornaria isso exato. |
+
 ## Próximos passos sugeridos
-1. Completar a planilha principal com as colunas acima.
-2. Implementar o mapa (Leaflet ou D3 + TopoJSON local), que é o painel mais rico.
-3. Quiz e Quem sou eu?, que são os mais simples e os de maior apelo para a escola.
-4. Linha do tempo com marcos validados por uma especialista.
-5. Rede e nuvem de palavras.
+1. Validar com especialista os marcos de `data/marcos.csv` e as coordenadas de `data/coordenadas_proposta.csv`.
+2. Adicionar as fotos que faltam em `data/photo/` e a coluna `nome_curto` (ex.: "Maria Leide", "Cristina Pessolani").
+3. Preencher créditos, fontes e equipe no encerramento.
+4. Revisar a lista de instituições da rede em `js/rede.js` (ou criar a coluna `instituicoes` padronizada).
+5. Testar com estudantes (9–18 anos) num computador de exposição e num celular.
