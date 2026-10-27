@@ -93,9 +93,9 @@ Segue o manual da marca da **23ª SNCT "Ciência Delas"** (`design_requirements/
 ## Ajustes sugeridos nas planilhas
 
 **Planilha principal (`mulheres.csv`)**
-1. **Fotos:** 23 das 29 mulheres não têm o arquivo correspondente em `data/photo/` (a página mostra as iniciais). Atenção a `janninebenso.jpg` (o arquivo é `janineebenso.jpg`) e a `jeanwatson` sem extensão na linha repetida.
+1. **Fotos:** todas as 29 mulheres têm foto. Quatro nomes da coluna `foto` foram corrigidos para bater com os arquivos (Alice Tibiriçá, Maria Esther/Eugênia, Rejane Almeida, Laila de Laguiche, que tinha um link no lugar da foto). Faltam o crédito e a licença de cada imagem.
 2. **Jean Margaret Watson** aparece duas vezes. A página usa só a primeira linha.
-3. **Maria Esther Noviski Gallo:** a minibio a chama de "Maria Eugênia Novisk Gallo", e a foto se chama `mariaeugenia.jpg`. Confirmar o nome.
+3. **Maria Esther Noviski Gallo:** a minibio a chama de "Maria Eugênia Novisk Gallo", e a foto se chama `mariaeugenia.jpeg`. Confirmar o nome.
 4. **Ruth Bowden:** *orígem* diz "London, England", mas a minibio diz que ela nasceu na Índia. O mapa segue a minibio.
 5. **latitude/longitude** da planilha estão em formatos misturados (`22.572.646`, `52,16° N`, `9°02′`) e alguns valores estão errados (Wanda: lon = lat; Alice Ball: lon −0,17; Alice Tibiriçá: coordenadas da Fiocruz). Por isso o mapa usa `coordenadas_proposta.csv`, que tem as 29 mulheres e uma coluna de confiança. Sugestão: trazer para a planilha principal as colunas `cidade_nascimento`, `pais_nascimento_iso3`, `lat_nascimento`, `lon_nascimento` e `locais_atuacao` (formato `Cidade|ISO3|lat|lon; …`, com ponto decimal). Elas têm prioridade sobre o arquivo provisório.
 6. **eixo** pode ter vários valores separados por `;` ou `/`. O primeiro é o principal (cor do retrato); os demais aparecem como etiquetas e contam no filtro do mapa.
@@ -132,7 +132,7 @@ Segue o manual da marca da **23ª SNCT "Ciência Delas"** (`design_requirements/
 
 ## Próximos passos sugeridos
 1. Validar com especialista os marcos de `data/marcos.csv` e as coordenadas de `data/coordenadas_proposta.csv`.
-2. Adicionar as fotos que faltam em `data/photo/` e a coluna `nome_curto` (ex.: "Maria Leide", "Cristina Pessolani").
-3. Preencher créditos, fontes e equipe no encerramento.
+2. Adicionar a coluna `nome_curto` (ex.: "Maria Leide", "Cristina Pessolani") e os créditos das fotos.
+3. Equipe preenchida no encerramento (RedeHans RJ · IOC/Fiocruz e PPGD · EBA/UFRJ); faltam os créditos das imagens.
 4. Revisar a lista de instituições da rede em `js/rede.js` (ou criar a coluna `instituicoes` padronizada).
 5. Testar com estudantes (9–18 anos) num computador de exposição e num celular.
