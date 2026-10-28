@@ -44,7 +44,7 @@
         <p class="preview-label">Palavras que mais aparecem nas biografias</p>
         <div class="pal__cloud">${shuffle(ws).map((f, k) => {
           const t = (f.women.size - 1) / Math.max(1, max - 1);
-          return `<button data-word="${esc(f.key)}" style="font-size:${(15 + 26 * Math.sqrt(t)).toFixed(0)}px;color:${PALETTE[k % PALETTE.length]};font-weight:${t > .4 ? 800 : 600}" title="${f.women.size} ${f.women.size > 1 ? "mulheres" : "mulher"}">${esc(f.label)}</button>`;
+          return `<button data-word="${esc(f.key)}" style="font-size:calc(${(15 + 26 * Math.sqrt(t)).toFixed(0)}px * var(--fs));color:${PALETTE[k % PALETTE.length]};font-weight:${t > .4 ? 800 : 600}" title="${f.women.size} ${f.women.size > 1 ? "mulheres" : "mulher"}">${esc(f.label)}</button>`;
         }).join("")}</div>
       </div>
       <div class="pal__result" aria-live="polite" hidden></div>`;
